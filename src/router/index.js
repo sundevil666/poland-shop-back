@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store'
 import Home from '../views/Home.vue'
+import Auth from '@/views/Auth.vue';
 
 const routes = [
   {
@@ -15,7 +16,7 @@ const routes = [
   {
     path: '/auth',
     name: 'Auth',
-    component: () => import( '../views/Auth.vue'),
+    component: Auth,
     meta: {
       layout: 'default',
       auth: false,
@@ -63,7 +64,7 @@ router.beforeEach((to, from, next) => {
   if(requireAuth && store.getters['auth/isAuthenticated']) {
     next()
   } else if (requireAuth && !store.getters['auth/isAuthenticated']) {
-    next('/auth?message=auth')
+    next('/shop-adminka/auth')
   } else {
     next()
   }

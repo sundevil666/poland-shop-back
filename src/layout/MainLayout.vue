@@ -15,10 +15,10 @@ export default {
   },
   setup() {
     const navList = [
-      {id: 1, label: 'Products', url: '/'},
-      {id: 2, label: 'Add Product', url: '/add-product'},
-      {id: 3, label: 'Category', url: '/category'},
-      {id: 4, label: 'Add Category', url: '/add-category'},
+      {id: 1, label: 'Products', url: {name: 'Home'}},
+      {id: 2, label: 'Add Product', url: {name: 'AddProduct'}},
+      {id: 3, label: 'Category', url: {name: 'Category'}},
+      {id: 4, label: 'Add Category', url: {name: 'AddCategory'}},
     ]
     return {
       navList
