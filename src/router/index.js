@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from '../store'
+import { getItem } from '/src/helpers/persistanceStorage'
 import Home from '../views/Home.vue'
 import Auth from '@/views/Auth.vue';
 
@@ -61,10 +61,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const requireAuth = to.meta.auth
 
-  if(requireAuth && store.getters['auth/isAuthenticated']) {
+  if(requireAuth && getItem('accessToken')) {
     next()
-  } else if (requireAuth && !store.getters['auth/isAuthenticated']) {
-    next('/shop-adminka/auth')
+  } else if (requireAuth && !getItem('accessToken')) {
+    next('/auth')
   } else {
     next()
   }

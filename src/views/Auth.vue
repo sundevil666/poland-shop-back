@@ -4,7 +4,7 @@
       <h1>Аuthorization</h1>
       <form @submit.prevent="onSubmit()">
         <the-input
-            v-model="user.name"
+            v-model="user.email"
           label="Email"
           placeholder="name@example.com"
         />
@@ -27,20 +27,17 @@ export default {
   data() {
     return {
       user: {
-        name: null,
+        email: null,
         password: null,
       }
     }
   },
   methods: {
     onSubmit () {
-      const data = {
-        email: this.user.name,
-        password: this.user.password
-      }
-      this.$store.dispatch('auth', data)
+      this.$store.dispatch('auth', this.user)
           .then(() => {
-            this.$router.push({name: 'home'})
+            this.$router.push({name: 'Home'});
+            console.log('il');
           })
     }
   }

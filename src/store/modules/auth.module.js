@@ -14,16 +14,16 @@ const mutations = {
 }
 
 const actions = {
-  auth({commit}, credentials) {
+  auth(_, credentials) {
     return new Promise((resolve, reject) => {
       auth(credentials)
         .then(response => {
-          const  token = response.data.auth_token
+          const  token = response.data.token
           setItem('accessToken', token)
           resolve(response.data)
         })
         .catch(err => {
-          commit('setErrors', err.response.data.base[0])
+          console.log('err auth', err);
           reject(err)
         })
     })
