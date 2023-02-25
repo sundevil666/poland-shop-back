@@ -2,7 +2,7 @@
   <div class="auth-page mt-5">
     <div class="w-75 mx-auto">
       <h1>Аuthorization</h1>
-      <form @submit.prevent="onSubmit()">
+      <form @submit.prevent="onSubmit">
         <the-input
             v-model="user.email"
           label="Email"
@@ -37,7 +37,6 @@ export default {
       this.$store.dispatch('auth', this.user)
           .then(() => {
             this.$router.push({name: 'Home'});
-            console.log('il');
           })
     }
   }

@@ -1,17 +1,9 @@
 import {auth} from '@/api/auth'
 import { setItem } from '/src/helpers/persistanceStorage'
 
-const state = {
-  user: null,
-  errors: null,
-  message: null,
-}
+const state = {}
 
-const mutations = {
-  setUser(state, payload) {
-    state.user = payload
-  },
-}
+const mutations = {}
 
 const actions = {
   auth(_, credentials) {

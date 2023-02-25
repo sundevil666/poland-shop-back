@@ -41,7 +41,7 @@ const routes = [
     },
   },
   {
-    path: '/add-category',
+    path: '/add-category/:id',
     name: 'AddCategory',
     component: () => import( '../views/AddCategory.vue'),
     meta: {
