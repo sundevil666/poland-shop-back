@@ -18,7 +18,7 @@ export default {
       {id: 1, label: 'Products', url: {name: 'Home'}},
       {id: 2, label: 'Add Product', url: {name: 'AddProduct'}},
       {id: 3, label: 'Category', url: {name: 'Category'}},
-      {id: 4, label: 'Add Category', url: {name: 'AddCategory', params: {id: 'new'}}},
+      {id: 4, label: 'Add Category', url: {name: 'AddCategory'}},
     ]
     return {
       navList

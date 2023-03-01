@@ -1,4 +1,4 @@
-import {listCategory, addCategory, updateByIdCategory, deleteCategory} from '@/api/category';
+import {listCategory, addCategory, updateCategoryById, deleteCategory, getCategoryById} from '@/api/category';
 
 const state = {}
 
@@ -29,14 +29,26 @@ const actions = {
         })
     })
   },
-  updateByIdCategory(_, data) {
+  getCategoryById(_, id) {
     return new Promise((resolve, reject) => {
-      updateByIdCategory(data)
+      getCategoryById(id)
         .then(res => {
           resolve(res.data)
         })
         .catch(err => {
-          console.log('err updateByIdCategory', err);
+          console.log('err getCategoryById', err);
+          reject(err)
+        })
+    })
+  },
+  updateCategoryById(_, data) {
+    return new Promise((resolve, reject) => {
+      updateCategoryById(data)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(err => {
+          console.log('err updateCategoryById', err);
           reject(err)
         })
     })

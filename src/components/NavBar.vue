@@ -8,7 +8,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item" v-for="item in navList" :key="item.id">
-            <router-link class="nav-link" aria-current="page" :to="item.url">{{ item.label }}</router-link>
+            <router-link exact-active-class="" class="nav-link" aria-current="page" :to="item.url">{{ item.label }}</router-link>
           </li>
         </ul>
       </div>
@@ -27,3 +27,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.nav-link.active {
+  border-bottom: 1px solid red;
+}
+</style>

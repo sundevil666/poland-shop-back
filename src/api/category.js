@@ -6,12 +6,13 @@ import axios from '@/api/index';
 
 // Получение списка категорий /api/categories
 export const listCategory = () => axios.get('/categories')
-export const getByIdCategory = (id) => axios.get(`/categories/${id}`)
+export const getCategoryById = (id) => axios.get(`/categories/${id}`)
 
 // Обнавление категории post /api/categories/8
-export const updateByIdCategory = ({id, data}) => axios.post(`/categories/${id}`, data)
+export const updateCategoryById = ({id, data}) => axios.post(`/categories/${id}`, data)
 // {
-//   "name": "product",
+//   name: "name",
+//   parent_i: 4
 // }
 
 // Создание категории post /api/categories

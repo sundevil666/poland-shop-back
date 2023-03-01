@@ -3,9 +3,21 @@
     <h1>Category</h1>
     <ul class="list-group" v-if="listCategory.length > 0">
       <li class="list-group-item active">An active item</li>
-      <li v-for="item in listCategory" :key="item.id" class="list-group-item d-flex align-items-center">
-        <router-link :to="{name: 'AddCategory', params: {id:  item.id}, query: {title: item.name}}">{{ item.name }}</router-link>
-        <button @click="deleteCategory(item.id, item.name)" class="btn btn-danger ms-auto">Delete</button>
+      <li v-for="item in filterListCategory" :key="item.id" class="list-group-item">
+        <div v-if="item.parent === null" class="d-flex align-items-center">
+          <router-link :to="{name: 'AddCategory', params: {id:  item.id}}">
+            <div>{{ item.name }}</div>
+          </router-link>
+          <button @click="deleteCategory(item.id, item.name)" class="btn btn-danger ms-auto">Delete</button>
+        </div>
+        <ul v-if="item.children.length > 0" class="mt-3">
+          <li v-for="subItem in item.children" :key="subItem.id" class="list-group-item d-flex align-items-center">
+            <router-link :to="{name: 'AddCategory', params: {id:  subItem.id}}">
+              {{ subItem.name }}
+            </router-link>
+            <button @click="deleteCategory(subItem.id, subItem.name)" class="btn btn-danger ms-auto">Delete</button>
+          </li>
+        </ul>
       </li>
     </ul>
     <div v-else>List is empty</div>
@@ -18,6 +30,11 @@ export default {
   data() {
     return {
       listCategory: [],
+    }
+  },
+  computed: {
+    filterListCategory () {
+      return this.listCategory.filter(item => item.parent === null)
     }
   },
   mounted () {
