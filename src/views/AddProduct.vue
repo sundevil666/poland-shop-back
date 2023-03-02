@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Add Product</h1>
+    <h1>{{productById ? 'Edit' : 'Add'}} Product</h1>
     <form @submit.prevent="onSubmit">
       <div class="row">
         <div class="col-10">
@@ -8,7 +8,7 @@
         </div>
         <div class="col-2">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="product.status">
             <label class="form-check-label" for="flexCheckDefault">
               Status
             </label>
@@ -22,10 +22,10 @@
           <the-input label="Code" placeholder="Code" tyepInput="number" v-model.number="product.code" />
         </div>
         <div class="col-4">
-          <the-input label="Price" placeholder="Price" tyepInput="text" v-model.number="product.price" />
+          <the-input label="Price" placeholder="Price" tyepInput="text" v-model="product.price" />
         </div>
         <div class="col-4">
-          <the-input label="First Price" placeholder="First Price" tyepInput="text" v-model.mnumber="product.first_price" />
+          <the-input label="First Price" placeholder="First Price" tyepInput="text" v-model="product.first_price" />
         </div>
 
       </div>
@@ -53,7 +53,6 @@
         </div>
       </div>
 
-
       <div class="form-floating mb-3">
         <textarea
             v-model="product.description"
@@ -69,7 +68,8 @@
   </div>
 </template>
 
-<script>
+<script>2
+
 export default {
   name: "AddProduct",
   data () {
@@ -83,16 +83,38 @@ export default {
         code: 1723314791448,
         category_id: '',
         preview: '',
-        status: false,
+        status: true,
         labelMark: 'Są dostępne'
       },
       listCategory: []
     }
   },
+  computed: {
+    productById () {
+      return this.$route.params.id
+    }
+  },
   mounted () {
     this.fetchListCategory()
+    this.fetchProductById(this.productById)
   },
   methods: {
+    fetchProductById(id) {
+      this.$store.dispatch('getProductById', id)
+          .then(res => {
+            console.log(res.data);
+            this.product.name = res.data.name
+            this.product.promoCod = res.data.promoCod
+            this.product.description = res.data.description
+            this.product.first_price = res.data.first_price
+            this.product.price = res.data.price
+            this.product.code = res.data.code
+            this.product.category_id = res.data.category_id
+            this.product.preview = res.data.preview
+            this.product.status = res.data.status
+            this.product.labelMark = res.data.labelMark
+          })
+    },
     fetchListCategory () {
       this.$store.dispatch('listCategory')
           .then((data) => {
@@ -100,10 +122,18 @@ export default {
           })
     },
     onSubmit () {
-      this.$store.dispatch('addProduct', this.product)
-          .then((data) => {
-            console.log(data);
-          })
+      if(this.productById) {
+        this.$store.dispatch('updateProductById', {id: this.productById, data: this.product})
+            .then((data) => {
+              console.log(data);
+            })
+      } else {
+        this.$store.dispatch('addProduct', this.product)
+            .then((data) => {
+              console.log(data);
+            })
+      }
+
     }
   }
 }

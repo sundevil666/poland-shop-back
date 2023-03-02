@@ -11,7 +11,7 @@
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Category</label>
             <select v-model="currentCategory" class="form-select">
-              <option selected disabled value="">Category</option>
+              <option selected disabled value="null">Category</option>
               <option
                   v-for="cat in filterCategory"
                   :key="cat.id"
@@ -38,7 +38,7 @@ export default {
       labelCategory: '',
       listCategory: [],
       category: {},
-      currentCategory: '',
+      currentCategory: null,
       isLoad: false,
     }
   },

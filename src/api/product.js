@@ -10,8 +10,6 @@ export const listProducts = () => axios.get('/products')
 
 export const deleteByIdProduct = (id) => axios.delete(`/products/${id}`)
 
-export const listProductsByIdCategory = (id) => axios.get(`/categories/${id}`)
-export const updateByIdProduct = (id, data) => axios.post(`/products/${id}`, data)
+export const getProductById = (id) => axios.get(`/products/${id}`)
 
-export const getByIdProduct = (id) => axios.get(`/products/${id}`)
-
+export const updateProductById = ({id, data}) => axios.post(`/products/${id}`, data)

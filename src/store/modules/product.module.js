@@ -1,4 +1,4 @@
-import {addProduct, listProducts, deleteByIdProduct} from '@/api/product';
+import {addProduct, listProducts, deleteByIdProduct, getProductById, updateProductById} from '@/api/product';
 
 const state = {}
 
@@ -40,7 +40,32 @@ const actions = {
           reject(err)
         })
     })
-  }
+  },
+  getProductById(_, id) {
+    return new Promise((resolve, reject) => {
+      getProductById(id)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(err => {
+          console.log('err getByIdProduct', err);
+          reject(err)
+        })
+    })
+  },
+  updateProductById(_, data) {
+    console.log(data);
+    return new Promise((resolve, reject) => {
+      updateProductById(data)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(err => {
+          console.log('err updateProductById', err);
+          reject(err)
+        })
+    })
+  },
 }
 
 export default {
