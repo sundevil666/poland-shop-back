@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>Category</h1>
-    <ul class="list-group" v-if="listCategory.length > 0">
+    <div v-if="isLoad">Load...</div>
+    <ul class="list-group" v-else-if="listCategory.length > 0">
       <li class="list-group-item active">An active item</li>
       <li v-for="item in filterListCategory" :key="item.id" class="list-group-item">
         <div v-if="item.parent === null" class="d-flex align-items-center">
@@ -30,6 +31,7 @@ export default {
   data() {
     return {
       listCategory: [],
+      isLoad: false,
     }
   },
   computed: {
@@ -42,9 +44,11 @@ export default {
   },
   methods: {
     fetchListCategory () {
+      this.isLoad = true
       this.$store.dispatch('listCategory')
           .then((data) => {
             this.listCategory = data.data
+            this.isLoad = false
           })
     },
     deleteCategory (idCat, nameCat) {
