@@ -19,13 +19,13 @@
 
       <div class="row">
         <div class="col-4">
-          <the-input label="Code" placeholder="Code" tyepInput="text" v-model="product.code" />
+          <the-input label="Code" placeholder="Code" tyepInput="number" v-model.number="product.code" />
         </div>
         <div class="col-4">
-          <the-input label="Price" placeholder="Price" tyepInput="text" v-model="product.price" />
+          <the-input label="Price" placeholder="Price" tyepInput="text" v-model.number="product.price" />
         </div>
         <div class="col-4">
-          <the-input label="First Price" placeholder="First Price" tyepInput="text" v-model="product.first_price" />
+          <the-input label="First Price" placeholder="First Price" tyepInput="text" v-model.mnumber="product.first_price" />
         </div>
 
       </div>
@@ -34,7 +34,7 @@
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Category</label>
             <select v-model="product.category_id" class="form-select">
-              <option selected disabled value="0">Category</option>
+              <option selected disabled value="">Category</option>
               <option
                   v-for="cat in listCategory"
                   :key="cat.id"
@@ -49,7 +49,7 @@
           <the-input label="Label mark" placeholder="Label mark" tyepInput="text" v-model="product.labelMark" />
         </div>
         <div class="col-4">
-          <the-input label="Photo" typeInput="file" />
+          <the-input label="Photo" typeInput="text" v-model="product.preview" />
         </div>
       </div>
 
@@ -78,12 +78,12 @@ export default {
         name: 'Profil aluminiowy uniwersalny bezuszczelkowy',
         promoCod: 'ad12DK',
         description: 'description',
-        first_price: '95',
-        price: '75',
-        code: '0723314791448',
-        category_id: '2',
-        preview: 'file',
-        status: null,
+        first_price: 95,
+        price: 75,
+        code: 1723314791448,
+        category_id: '',
+        preview: '',
+        status: false,
         labelMark: 'Są dostępne'
       },
       listCategory: []
@@ -100,7 +100,10 @@ export default {
           })
     },
     onSubmit () {
-      console.log(this.product);
+      this.$store.dispatch('addProduct', this.product)
+          .then((data) => {
+            console.log(data);
+          })
     }
   }
 }

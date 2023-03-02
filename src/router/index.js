@@ -23,7 +23,7 @@ const routes = [
     },
   },
   {
-    path: '/add-product',
+    path: '/add-product/:id?',
     name: 'AddProduct',
     component: () => import( '../views/AddProduct.vue'),
     meta: {
