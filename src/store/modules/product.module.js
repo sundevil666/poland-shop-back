@@ -54,7 +54,6 @@ const actions = {
     })
   },
   updateProductById(_, data) {
-    console.log(data);
     return new Promise((resolve, reject) => {
       updateProductById(data)
         .then(res => {
