@@ -6,8 +6,8 @@
       <li class="list-group-item active">An active item</li>
       <li v-for="item in listProducts" :key="item.id" class="list-group-item">
         <div class="d-flex align-items-center">
-          <div class="me-2">#p-{{ item.id }}-</div>
-          <div class="me-2">#c-{{ item.category_id }}-</div>
+          <div class="me-2">#-{{ item.id }}</div>
+          <div class="me-2">#cat-{{ item.category_id }}</div>
           <router-link :to="{name: 'AddProduct', params: {id:  item.id}}">
             <span>{{ item.name }}</span>
           </router-link>
