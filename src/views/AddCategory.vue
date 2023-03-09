@@ -6,8 +6,7 @@
       <div class="row">
         <div class="col-8">
           <the-input label="Title category" type="text" placeholder="Title category" v-model="labelCategory" />
-        </div>
-        <div class="col-4">
+          <the-input label="Photo" typeInput="text" v-model="previewCategory" placeholder="src img" />
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Category</label>
             <select v-model="currentCategory" class="form-select">
@@ -22,9 +21,13 @@
             </select>
           </div>
         </div>
+        <div class="col-4">
+          <the-button :label="!idCategory ? 'Add Category' : 'Edit Category'" class="mb-3" />
+          <img v-if="previewCategory.length > 0" :src="previewCategory" alt="src is not correct" class="w-100">
+        </div>
+
       </div>
 
-      <the-button label="Add Category" />
     </form>
   </div>
 </template>
@@ -37,6 +40,7 @@ export default {
     return {
       labelCategory: '',
       listCategory: [],
+      previewCategory: '',
       category: {},
       currentCategory: null,
       isLoad: false,
@@ -71,6 +75,7 @@ export default {
           .then((data) => {
             this.category = data.data
             this.labelCategory = this.category.name
+            this.previewCategory = this.category.preview
             if(this.category.parent_id) {
               this.currentCategory = this.category.parent.id
             }
@@ -84,6 +89,7 @@ export default {
       const data = {
         name: this.labelCategory,
         parent_id: this.currentCategory,
+        preview: this.previewCategory,
       }
       if(!this.idCategory) {
         this.$store.dispatch('addCategory', data)
