@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getItem } from '/src/helpers/persistanceStorage'
 
-axios.defaults.baseURL = 'http://shop-api.polandgroups.pl/api'
+axios.defaults.baseURL = 'https://shop-api.polandgroups.pl/api'
 
 axios.interceptors.request.use(config => {
   config.headers['Content-Type'] = 'application/json'
