@@ -5,7 +5,7 @@ import Auth from '@/views/Auth.vue';
 
 const routes = [
   {
-    path: '/poland-shop-back/:pathMatch(.*)*',
+    path: '/:pathMatch(.*)',
     name: 'NotFound',
     component: () => import('../views/NotFound.vue'),
     meta: {
