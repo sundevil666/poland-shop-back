@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /poland-shop-back/
+
+# If the request is not for a valid file or directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect to index.html in the /poland-shop-back/dist/ directory
+RewriteRule . /poland-shop-back/dist/index.html [L]
