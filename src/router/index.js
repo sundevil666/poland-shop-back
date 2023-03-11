@@ -5,15 +5,6 @@ import Auth from '@/views/Auth.vue';
 
 const routes = [
   {
-    path: '/:pathMatch(.*)',
-    name: 'NotFound',
-    component: () => import('../views/NotFound.vue'),
-    meta: {
-      layout: 'main',
-      auth: false,
-    },
-  },
-  {
     path: '/',
     name: 'Home',
     component: Home,
