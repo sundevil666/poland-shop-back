@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /poland-shop-back/
+
+# Redirect all requests to /poland-shop-back/dist/index.html
+RewriteRule ^$ dist/index.html [L]
+RewriteRule (.*) dist/$1 [L]
