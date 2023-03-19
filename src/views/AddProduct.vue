@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{productById ? 'Edit' : 'Add'}} Product</h1>
-    <form @submit.prevent="onSubmit">
+    <form @submit.prevent="onSubmitProduct">
       <div class="row">
         <div class="col-9">
           <div class="row">
@@ -50,13 +50,13 @@
             </div>
             <div class="col-12">
               <div class="form-floating mb-3">
-        <textarea
-            v-model="product.description"
-            class="form-control"
-            placeholder="Description"
-            id="floatingTextarea2"
-            style="height: 100px"
-        ></textarea>
+                <textarea
+                    v-model="product.description"
+                    class="form-control"
+                    placeholder="Description"
+                    id="floatingTextarea2"
+                    style="height: 100px"
+                ></textarea>
                 <label for="floatingTextarea2">Description</label>
               </div>
             </div>
@@ -76,10 +76,38 @@
         </div>
       </div>
     </form>
+    <hr>
+    <h2>Feedbacks</h2>
+    <form @submit.prevent="onSubmitFeedback">
+      <div class="row">
+        <div class="col-8">
+          <the-input label="Feedback name" placeholder="Feedback Name" tyepInput="text" v-model="feedback.name" />
+          <the-input label="Feedback message" placeholder="Feedback message" tyepInput="text" v-model="feedback.message" />
+<!--          <the-input label="Feedback file" placeholder="Feedback file" tyepInput="text" v-model="feedback.file" />-->
+          <div class="form-floating mb-3">
+            <textarea
+                v-model="feedback.message"
+                class="form-control"
+                style="height: 100px"
+                placeholder="Feedback message"
+            ></textarea>
+            <label for="floatingTextarea2">Feedback message</label>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class=""><the-button label="Add feedback" class="mb-4" /></div>
+<!--          <img v-if="feedback.file.length > 0" :src="feedback.file" alt="src is not correct" class="w-100">-->
+        </div>
+      </div>
+    </form>
+    <div v-if="feedbacks.length === 0" class="my-5">Feedbacks list is empty</div>
+    <ul v-else class="mb-5">
+      <li v-for="feedback in feedbacks" :key="feedback.id">{{ feedback }}</li>
+    </ul>
   </div>
 </template>
 
-<script>2
+<script>
 
 export default {
   name: "AddProduct",
@@ -98,13 +126,18 @@ export default {
         labelMark: '',
         quantity: 1,
       },
-      listCategory: []
+      listCategory: [],
+      feedbacks: [],
+      feedback: {
+        name: 'piter',
+        message: 'product is good',
+      }
     }
   },
   computed: {
     productById () {
       return this.$route.params.id
-    }
+    },
   },
   mounted () {
     this.fetchListCategory()
@@ -127,6 +160,7 @@ export default {
             this.product.preview = res.data.preview
             this.product.status = res.data.status
             this.product.labelMark = res.data.labelMark
+            this.feedbacks = res.data.feedbacks
           })
     },
     fetchListCategory () {
@@ -135,7 +169,11 @@ export default {
             this.listCategory = data.data
           })
     },
-    onSubmit () {
+    onSubmitFeedback () {
+      this.feedback.product_id = Number(this.productById)
+      this.$store.dispatch('addFeedback', this.feedback )
+    },
+    onSubmitProduct () {
       if(this.productById) {
         this.$store.dispatch('updateProductById', {id: this.productById, data: this.product})
             .then((data) => {
