@@ -4,7 +4,8 @@
 
 import axios from '@/api/index';
 
-export const updateFeedbackById = ({product_id, data}) => axios.post(`/feedback/${product_id}`, data)
+export const getFeedbackById = (id) => axios.get(`/feedback/${id}`)
+export const updateFeedbackById = ({id, data}) => axios.post(`/feedback/${id}`, data)
 
 export const addFeedback = (data) => axios.post('/feedback', data)
 

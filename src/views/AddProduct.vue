@@ -78,11 +78,10 @@
     </form>
     <hr>
     <h2>Feedbacks</h2>
-    <form @submit.prevent="onSubmitFeedback">
+    <form>
       <div class="row">
         <div class="col-8">
           <the-input label="Feedback name" placeholder="Feedback Name" tyepInput="text" v-model="feedback.name" />
-          <the-input label="Feedback message" placeholder="Feedback message" tyepInput="text" v-model="feedback.message" />
 <!--          <the-input label="Feedback file" placeholder="Feedback file" tyepInput="text" v-model="feedback.file" />-->
           <div class="form-floating mb-3">
             <textarea
@@ -95,14 +94,31 @@
           </div>
         </div>
         <div class="col-4">
-          <div class=""><the-button label="Add feedback" class="mb-4" /></div>
+          <div v-if="!isEdit"><the-button label="Add feedback" class="mb-4" @click.prevent="onSubmitFeedback" /></div>
+          <div class="d-flex gap-3" v-else>
+            <the-button @click.prevent="editFeedback" label="Edit feedback" class="mb-4" />
+            <the-button @click.prevent="cancelEditFeedback" label="Cancel" class="mb-4 btn-light" />
+          </div>
 <!--          <img v-if="feedback.file.length > 0" :src="feedback.file" alt="src is not correct" class="w-100">-->
         </div>
       </div>
     </form>
     <div v-if="feedbacks.length === 0" class="my-5">Feedbacks list is empty</div>
     <ul v-else class="mb-5">
-      <li v-for="feedback in feedbacks" :key="feedback.id">{{ feedback }}</li>
+      <li
+          v-for="feedback in feedbacks"
+          :key="feedback.id"
+          class="row mb-3"
+      >
+        <div class="col-1">#{{ feedback.id }}</div>
+        <div class="col">
+          <button class="btn btn-info text-truncate" title="Edit" @click="preparationEditFeedback(feedback.id)">{{ feedback.name }}</button>
+        </div>
+        <div class="col-5 text-truncate">{{ feedback.message }}</div>
+        <div class="col-1">
+          <button class="btn btn-danger" @click="deleteFeedback(feedback.id)">Deleted</button>
+        </div>
+      </li>
     </ul>
   </div>
 </template>
@@ -129,9 +145,10 @@ export default {
       listCategory: [],
       feedbacks: [],
       feedback: {
-        name: 'piter',
-        message: 'product is good',
-      }
+        name: '',
+        message: '',
+      },
+      isEdit: false,
     }
   },
   computed: {
@@ -168,6 +185,36 @@ export default {
           .then((data) => {
             this.listCategory = data.data
           })
+    },
+    deleteFeedback (id) {
+      console.log(id);
+    },
+    preparationEditFeedback (id) {
+      this.isEdit = true
+      this.$store.dispatch('getFeedbackById', id)
+          .then(res => {
+            const { data } = res
+            this.feedback.id = data.id
+            this.feedback.name = data.name
+            this.feedback.message = data.message
+            this.feedback.product_id = Number(data.product_id)
+          })
+    },
+    editFeedback () {
+      const id = this.feedback.id
+      const data = this.feedback
+      this.$store.dispatch('updateFeedbackById', { id, data })
+          .then(() => {
+            this.fetchProductById(this.productById)
+            this.cancelEditFeedback()
+          })
+    },
+    cancelEditFeedback () {
+      this.isEdit = false
+      this.feedback.id = null
+      this.feedback.name = ''
+      this.feedback.message = ''
+      this.feedback.product_id = ''
     },
     onSubmitFeedback () {
       this.feedback.product_id = Number(this.productById)

@@ -1,4 +1,4 @@
-import {updateFeedbackById, addFeedback, deleteFeedback } from '@/api/feedbacks';
+import {updateFeedbackById, addFeedback, deleteFeedback, getFeedbackById } from '@/api/feedbacks';
 
 const state = {}
 
@@ -13,6 +13,18 @@ const actions = {
         })
         .catch(err => {
           console.log('err addFeedback', err);
+          reject(err)
+        })
+    })
+  },
+  getFeedbackById(_, credentials) {
+    return new Promise((resolve, reject) => {
+      getFeedbackById(credentials)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(err => {
+          console.log('err getFeedbackById', err);
           reject(err)
         })
     })
