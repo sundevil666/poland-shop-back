@@ -187,7 +187,14 @@ export default {
           })
     },
     deleteFeedback (id) {
-      console.log(id);
+      const confirmation = confirm(`Delete feedback ${id}?`)
+      if(confirmation) {
+        this.$store.dispatch('deleteFeedback', id)
+            .then(() => {
+              this.fetchProductById(this.productById)
+            })
+
+      }
     },
     preparationEditFeedback (id) {
       this.isEdit = true
@@ -219,6 +226,10 @@ export default {
     onSubmitFeedback () {
       this.feedback.product_id = Number(this.productById)
       this.$store.dispatch('addFeedback', this.feedback )
+          .then(() => {
+            this.fetchProductById(this.productById)
+            this.cancelEditFeedback()
+          })
     },
     onSubmitProduct () {
       if(this.productById) {
