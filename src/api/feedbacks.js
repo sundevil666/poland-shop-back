@@ -4,8 +4,8 @@
 
 import axios from '@/api/index';
 
-export const updateFeedbacksById = ({id, data}) => axios.post(`/feedback/${id}`, data)
+export const updateFeedbackById = ({id, data}) => axios.post(`/feedback/${id}`, data)
 
-export const addFeedbacks = (data) => axios.post('/feedback', data)
+export const addFeedback = (data) => axios.post('/feedback', data)
 
-export const deleteCategory = (id) => axios.delete(`/feedback/${id}`)
+export const deleteFeedback = (id) => axios.delete(`/feedback/${id}`)
