@@ -162,7 +162,7 @@ export default {
         message: '',
       },
       isEdit: false,
-      errors: []
+      errors: null
     }
   },
   computed: {
