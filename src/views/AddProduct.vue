@@ -1,6 +1,11 @@
 <template>
   <div>
     <h1>{{productById ? 'Edit' : 'Add'}} Product</h1>
+    <ul v-if="errors" class="text-bg-danger form-control-plaintext">
+      <li v-for="err in errors" :key="err">
+        {{err}}
+      </li>
+    </ul>
     <form @submit.prevent="onSubmitProduct">
       <div class="row">
         <div class="col-9">
@@ -157,6 +162,7 @@ export default {
         message: '',
       },
       isEdit: false,
+      errors: []
     }
   },
   computed: {
@@ -263,6 +269,10 @@ export default {
                 status: false,
                 labelMark: ''
               }
+            })
+            .catch(err => {
+              const {errors} = err.response.data
+              this.errors = errors
             })
       }
 
