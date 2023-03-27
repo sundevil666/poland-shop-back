@@ -82,7 +82,7 @@
       <div class="row">
         <div class="col-8">
           <the-input label="Feedback name" placeholder="Feedback Name" tyepInput="text" v-model="feedback.name" />
-<!--          <the-input label="Feedback file" placeholder="Feedback file" tyepInput="text" v-model="feedback.file" />-->
+          <the-input label="Feedback avatar" placeholder="Feedback file" tyepInput="text" v-model="feedback.avatar" />
           <div class="form-floating mb-3">
             <textarea
                 v-model="feedback.message"
@@ -99,20 +99,27 @@
             <the-button @click.prevent="editFeedback" label="Edit feedback" class="mb-4" />
             <the-button @click.prevent="cancelEditFeedback" label="Cancel" class="mb-4 btn-light" />
           </div>
-<!--          <img v-if="feedback.file.length > 0" :src="feedback.file" alt="src is not correct" class="w-100">-->
+          <div>
+            <img v-if="feedback.avatar.length > 0" :src="feedback.avatar" alt="url isn't correctly" class="w-100 d-block h-auto">
+          </div>
         </div>
       </div>
     </form>
     <div v-if="feedbacks.length === 0" class="my-5">Feedbacks list is empty</div>
-    <ul v-else class="mb-5">
+    <ul v-else class="my-5">
       <li
           v-for="feedback in feedbacks"
           :key="feedback.id"
           class="row mb-3"
       >
         <div class="col-1">#{{ feedback.id }}</div>
+        <div class="col-1">
+          <div><img :src="feedback.avatar" :alt="feedback.name" class="d-block w-100 h-auto"></div>
+        </div>
         <div class="col">
-          <button class="btn btn-info text-truncate" title="Edit" @click="preparationEditFeedback(feedback.id)">{{ feedback.name }}</button>
+          <button class="btn btn-info text-truncate" title="Edit" @click="preparationEditFeedback(feedback.id)">
+            {{ feedback.name }}
+          </button>
         </div>
         <div class="col-5 text-truncate">{{ feedback.message }}</div>
         <div class="col-1">
@@ -146,6 +153,7 @@ export default {
       feedbacks: [],
       feedback: {
         name: '',
+        avatar: '',
         message: '',
       },
       isEdit: false,
@@ -221,6 +229,7 @@ export default {
       this.feedback.id = null
       this.feedback.name = ''
       this.feedback.message = ''
+      this.feedback.avatar = ''
       this.feedback.product_id = ''
     },
     onSubmitFeedback () {
