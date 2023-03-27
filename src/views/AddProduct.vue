@@ -71,7 +71,7 @@
             </label>
           </div>
 
-          <the-button label="Add Product" class="mb-4" />
+          <the-button :label="productById ? 'Edit' : 'Add'" class="mb-4" />
           <img v-if="product.preview.length > 0" :src="product.preview" alt="src is not correct" class="w-100">
         </div>
       </div>
@@ -182,7 +182,7 @@ export default {
             this.product.price = res.data.price
             this.product.code = res.data.code
             this.product.category_id = res.data.category_id
-            this.product.preview = res.data.preview
+            this.product.preview = res.data.preview || ''
             this.product.status = res.data.status
             this.product.labelMark = res.data.labelMark
             this.feedbacks = res.data.feedbacks

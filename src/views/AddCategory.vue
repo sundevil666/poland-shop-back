@@ -75,7 +75,7 @@ export default {
           .then((data) => {
             this.category = data.data
             this.labelCategory = this.category.name
-            this.previewCategory = this.category.preview
+            this.previewCategory = this.category.preview || ''
             if(this.category.parent_id) {
               this.currentCategory = this.category.parent.id
             }
