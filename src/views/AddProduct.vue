@@ -11,18 +11,21 @@
         <div class="col-9">
           <div class="row">
             <div class="col-12">
-              <the-input label="Product name" placeholder="Product Name" tyepInput="text" v-model="product.name" />
+              <the-input label="Product name" placeholder="Product Name" type-input="text" v-model="product.name" />
             </div>
           </div>
           <div class="row">
+              <div class="col-4">
+                  <the-input label="Unit of measure" type-input="text" placeholder="Unit of measure" v-model="product.unit_of_measure"   />
+              </div>
             <div class="col-4">
-              <the-input label="Code" placeholder="Code" tyepInput="number" v-model.number="product.code" />
+              <the-input label="Code" placeholder="Code" type-input="text"  v-model="product.code" />
             </div>
             <div class="col-4">
-              <the-input label="Price" placeholder="Price" tyepInput="text" v-model="product.price" />
+              <the-input label="Price" placeholder="Price" type-input="text" v-model="product.price" />
             </div>
             <div class="col-4">
-              <the-input label="First Price" placeholder="First Price" tyepInput="text" v-model="product.first_price" />
+              <the-input label="First Price" placeholder="First Price" type-input="text" v-model="product.first_price" />
             </div>
           </div>
           <div class="row">
@@ -42,11 +45,11 @@
               </div>
             </div>
             <div class="col-4">
-              <the-input label="Label mark" placeholder="Label mark" tyepInput="text" v-model="product.labelMark" />
+              <the-input label="Label mark" placeholder="Label mark" type-input="text" v-model="product.labelMark" />
             </div>
 
             <div class="col-4">
-              <the-input label="Promo Code" placeholder="Promo Code" tyepInput="number" v-model.number="product.promoCod" />
+              <the-input label="Promo Code" placeholder="Promo Code" type-input="number" v-model.number="product.promoCod" />
             </div>
           </div>
           <div class="row">
@@ -68,7 +71,7 @@
           </div>
         </div>
         <div class="col-3">
-          <the-input label="Quantity" placeholder="Quantity" tyepInput="text" v-model="product.quantity" />
+          <the-input label="Quantity" placeholder="Quantity" type-input="text" v-model="product.quantity" />
           <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="product.status">
             <label class="form-check-label" for="flexCheckDefault">
@@ -86,8 +89,8 @@
     <form>
       <div class="row">
         <div class="col-8">
-          <the-input label="Feedback name" placeholder="Feedback Name" tyepInput="text" v-model="feedback.name" />
-          <the-input label="Feedback avatar" placeholder="Feedback file" tyepInput="text" v-model="feedback.avatar" />
+          <the-input label="Feedback name" placeholder="Feedback Name" type-input="text" v-model="feedback.name" />
+          <the-input label="Feedback avatar" placeholder="Feedback file" type-input="text" v-model="feedback.avatar" />
           <div class="form-floating mb-3">
             <textarea
                 v-model="feedback.message"
@@ -137,8 +140,12 @@
 
 <script>
 
+import TheButton from '@/components/form/TheButton.vue';
+import TheInput from '@/components/form/TheInput.vue';
+
 export default {
   name: "AddProduct",
+  components: {TheInput, TheButton},
   data () {
     return {
       product: {
@@ -153,6 +160,7 @@ export default {
         status: false,
         labelMark: '',
         quantity: 1,
+        unit_of_measure: null,
       },
       listCategory: [],
       feedbacks: [],
@@ -187,6 +195,7 @@ export default {
             this.product.first_price = res.data.first_price
             this.product.price = res.data.price
             this.product.code = res.data.code
+            this.product.unit_of_measure = res.data.unit_of_measure
             this.product.category_id = res.data.category_id
             this.product.preview = res.data.preview || ''
             this.product.status = res.data.status
@@ -253,6 +262,10 @@ export default {
               console.log(data);
               this.$router.push({name: 'Home'})
             })
+            .catch(err => {
+              const {errors} = err.response.data
+              this.errors = errors
+            })
       } else {
         this.$store.dispatch('addProduct', this.product)
             .then((data) => {
@@ -267,7 +280,8 @@ export default {
                 category_id: '',
                 preview: '',
                 status: false,
-                labelMark: ''
+                labelMark: '',
+                unit_of_measure: null,
               }
             })
             .catch(err => {
