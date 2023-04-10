@@ -1,7 +1,11 @@
 <template>
-  <div class="MainLayout container">
-    <nav-bar :nav-list="navList"></nav-bar>
-    <router-view />
+  <div class="main-layout container">
+      <div class="fixed-top">
+          <div class="container">
+              <nav-bar :nav-list="navList"></nav-bar>
+          </div>
+      </div>
+      <div class="container"><router-view /></div>
   </div>
 </template>
 
@@ -26,3 +30,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.main-layout {
+    padding-top: 57px;
+}
+</style>

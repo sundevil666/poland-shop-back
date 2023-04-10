@@ -118,11 +118,11 @@
       <li
           v-for="feedback in feedbacks"
           :key="feedback.id"
-          class="row mb-3"
+          class="row mb-2 border-bottom pb-2 align-items-center"
       >
         <div class="col-1">#{{ feedback.id }}</div>
         <div class="col-1">
-          <div><img :src="feedback.avatar" :alt="feedback.name" class="d-block w-100 h-auto"></div>
+          <div><img :src="feedback.avatar" :alt="feedback.name" class="d-block feedback-avatar"></div>
         </div>
         <div class="col">
           <button class="btn btn-info text-truncate" title="Edit" @click="preparationEditFeedback(feedback.id)">
@@ -294,3 +294,10 @@ export default {
   }
 }
 </script>
+<style>
+.feedback-avatar {
+    max-width: 100%;
+    height: auto;
+    max-height: 40px;
+}
+</style>
