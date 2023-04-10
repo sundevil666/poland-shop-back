@@ -35,4 +35,10 @@ export default {
 .main-layout {
     padding-top: 57px;
 }
+*, body ul {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    list-style: none;
+}
 </style>

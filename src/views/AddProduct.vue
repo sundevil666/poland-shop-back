@@ -85,6 +85,31 @@
       </div>
     </form>
     <hr>
+      <h2>Slides</h2>
+      <div class="row align-items-end">
+          <div class="col">
+              <the-input label="Slide" placeholder="Add slide" type-input="text" v-model="product.image" />
+          </div>
+          <div class="col-auto">
+              <the-button :type-input="'button'" label="Add slide" @click="addSlid" :disabled="product.image.length === 0" class="mb-3" />
+          </div>
+
+          <div class="col-2">
+              <img v-if="product.preview.length > 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
+          </div>
+      </div>
+      <p v-if="!product.images.length > 0">sliders is empty yet</p>
+      <div v-else>
+          <ul class="row">
+              <li v-for="(item, index) in product.images" :key="item" class="col-4 border-bottom mb-2 pb-2">
+                  <div class="position-relative">
+                      <img :src="item" alt="src is not correct" class="w-100 mb-2">
+                      <the-button :type-input="'button'" :type-btn="'btn-danger'" label="Delete" @click="deleteSlid(index)" class="position-absolute top-0 start-0" />
+                  </div>
+              </li>
+          </ul>
+      </div>
+    <hr>
     <h2>Feedbacks</h2>
     <form>
       <div class="row">
@@ -161,6 +186,8 @@ export default {
         labelMark: '',
         quantity: 1,
         unit_of_measure: null,
+        image: '',
+        images: [],
       },
       listCategory: [],
       feedbacks: [],
@@ -186,6 +213,16 @@ export default {
     }
   },
   methods: {
+    addSlid() {
+      this.product.images.push(this.product.image)
+      this.product.image = ''
+    },
+    deleteSlid(index) {
+      const confirmation = confirm(`Delete slide  #-${index}?`)
+      if(confirmation) {
+        this.product.images.splice(index, 1);
+      }
+    },
     fetchProductById(id) {
       this.$store.dispatch('getProductById', id)
           .then(res => {
@@ -199,6 +236,7 @@ export default {
             this.product.category_id = res.data.category_id
             this.product.preview = res.data.preview || ''
             this.product.status = res.data.status
+            this.product.images = res.data.images || []
             this.product.labelMark = res.data.labelMark
             this.feedbacks = res.data.feedbacks
           })

@@ -1,5 +1,5 @@
 <template>
-  <button type="submit" class="btn" :class="typeBtn">{{ label }}</button>
+  <button :type="typeInput" class="btn" :disabled="disabled" :class="typeBtn">{{ label }}</button>
 </template>
 
 <script>
@@ -13,6 +13,14 @@ export default {
     typeBtn: {
       type: String,
       default: 'btn-primary'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    typeInput: {
+      type: String,
+      default: 'submit'
     }
   }
 }
