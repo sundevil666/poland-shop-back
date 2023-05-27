@@ -27,6 +27,24 @@
             <div class="col-4">
               <the-input label="Discount" placeholder="Discount" type-input="text" v-model="product.discount" />
             </div>
+            <div class="col-4">
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Type product</label>
+                <select v-model="product.typeProduct" class="form-select">
+                  <option selected disabled value="">Type product</option>
+                  <option
+                      v-for="cat in typeProductList"
+                      :key="cat.id"
+                      :value="cat.id"
+                  >
+                    {{ cat.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-4">
+              <the-input label="Weight product" placeholder="Wight product" type-input="text" v-model="product.weightProduct" />
+            </div>
           </div>
           <div class="row">
             <div class="col-4">
@@ -178,6 +196,8 @@ export default {
         promoCod: '',
         description: '',
         discount: null,
+        typeProduct: 1,
+        weightProduct: null,
         price: null,
         code: null,
         category_id: '',
@@ -197,7 +217,12 @@ export default {
         message: '',
       },
       isEdit: false,
-      errors: null
+      errors: null,
+      typeProductList: [
+        {id: 1, name: 'sm'},
+        {id: 2, name: 'md'},
+        {id: 3, name: 'lg'},
+      ]
     }
   },
   computed: {
