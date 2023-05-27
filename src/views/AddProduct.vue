@@ -25,7 +25,7 @@
               <the-input label="Price" placeholder="Price" type-input="text" v-model="product.price" />
             </div>
             <div class="col-4">
-              <the-input label="First Price" placeholder="First Price" type-input="text" v-model="product.first_price" />
+              <the-input label="Discount" placeholder="Discount" type-input="text" v-model="product.discount" />
             </div>
           </div>
           <div class="row">
@@ -95,7 +95,7 @@
           </div>
 
           <div class="col-2">
-              <img v-if="product.preview.length > 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
+              <img v-if="product.preview.length !== 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
           </div>
       </div>
       <p v-if="!product.images.length > 0">sliders is empty yet</p>
@@ -177,7 +177,7 @@ export default {
         name: '',
         promoCod: '',
         description: '',
-        first_price: null,
+        discount: null,
         price: null,
         code: null,
         category_id: '',
@@ -229,9 +229,10 @@ export default {
             this.product.name = res.data.name
             this.product.promoCod = res.data.promoCod
             this.product.description = res.data.description
-            this.product.first_price = res.data.first_price
+            this.product.discount = res.data.discount
             this.product.price = res.data.price
             this.product.code = res.data.code
+            this.product.quantity = res.data.quantity
             this.product.unit_of_measure = res.data.unit_of_measure
             this.product.category_id = res.data.category_id
             this.product.preview = res.data.preview || ''
@@ -312,7 +313,7 @@ export default {
                 name: '',
                 promoCod: '',
                 description: '',
-                first_price: null,
+                discount: null,
                 price: null,
                 code: null,
                 category_id: '',
