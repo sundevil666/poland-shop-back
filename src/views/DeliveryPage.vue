@@ -15,6 +15,9 @@
           <li class="col">
             <TheInput :label="box.labelSize" v-model="box.size" :placeholder="box.labelSize" />
           </li>
+          <li class="col">
+            <TheInput label="Price" v-model="box.price" placeholder="Price" />
+          </li>
         </ul>
         <hr>
       </div>
