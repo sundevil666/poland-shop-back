@@ -37,7 +37,7 @@
                       :key="cat.id"
                       :value="cat.id"
                   >
-                    {{ cat.name }}
+                    {{ cat.label }}
                   </option>
                 </select>
               </div>
@@ -185,6 +185,7 @@
 
 import TheButton from '@/components/form/TheButton.vue';
 import TheInput from '@/components/form/TheInput.vue';
+import { boxes } from '@/moc/delivery-box';
 
 export default {
   name: "AddProduct",
@@ -218,11 +219,7 @@ export default {
       },
       isEdit: false,
       errors: null,
-      typeProductList: [
-        {id: 1, name: 'sm'},
-        {id: 2, name: 'md'},
-        {id: 3, name: 'lg'},
-      ]
+      typeProductList: boxes,
     }
   },
   computed: {

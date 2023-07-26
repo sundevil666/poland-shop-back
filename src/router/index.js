@@ -58,6 +58,15 @@ const routes = [
       auth: true,
     },
   },
+  {
+    path: '/delivery',
+    name: 'Delivery',
+    component: () => import( '../views/DeliveryPage.vue'),
+    meta: {
+      layout: 'main',
+      auth: true,
+    },
+  }
 ]
 
 const router = createRouter({

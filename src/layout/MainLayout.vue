@@ -2,7 +2,7 @@
   <div class="main-layout container">
       <div class="fixed-top">
           <div class="container">
-              <nav-bar :nav-list="navList"></nav-bar>
+              <NavBar :nav-list="navList"></NavBar>
           </div>
       </div>
       <div class="container"><router-view /></div>
@@ -23,6 +23,7 @@ export default {
       {id: 2, label: 'Add Product', url: {name: 'AddProduct'}},
       {id: 3, label: 'Category', url: {name: 'Category'}},
       {id: 4, label: 'Add Category', url: {name: 'AddCategory'}},
+      {id: 5, label: 'Delivery', url: {name: 'Delivery'}},
     ]
     return {
       navList
