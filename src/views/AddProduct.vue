@@ -29,21 +29,21 @@
             </div>
             <div class="col-4">
               <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Type product</label>
-                <select v-model="product.typeProduct" class="form-select">
-                  <option selected disabled value="">Type product</option>
+                <label for="exampleFormControlInput1" class="form-label">Delivery box</label>
+                <select v-model="product.box_id" class="form-select">
+                  <option selected disabled value="">Delivery box</option>
                   <option
-                      v-for="cat in typeProductList"
-                      :key="cat.id"
-                      :value="cat.id"
+                      v-for="item in boxesList?.boxes"
+                      :key="item.id"
+                      :value="item.id"
                   >
-                    {{ cat.label }}
+                    {{ item.title }}
                   </option>
                 </select>
               </div>
             </div>
             <div class="col-4">
-              <the-input label="Weight product" placeholder="Wight product" type-input="text" v-model="product.weightProduct" />
+              <the-input label="Weight product" placeholder="Wight product" type-input="text" v-model="product.size" />
             </div>
           </div>
           <div class="row">
@@ -90,6 +90,7 @@
         </div>
         <div class="col-3">
           <the-input label="Quantity" placeholder="Quantity" type-input="text" v-model="product.quantity" />
+          <the-input label="Weight" placeholder="Weight" type-input="text" v-model="product.weight" />
           <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="product.status">
             <label class="form-check-label" for="flexCheckDefault">
@@ -192,22 +193,24 @@ export default {
   data () {
     return {
       product: {
-        name: '',
+        name: 'No name',
         promoCod: '',
         description: '',
         discount: null,
-        typeProduct: 1,
-        weightProduct: null,
-        price: null,
-        code: null,
+        box_id: 1,
+        size: 1,
+        weight: 1,
+        price: 1,
+        code: 'need to add unique code',
         category_id: '',
         preview: '',
         status: false,
         labelMark: '',
         quantity: 1,
-        unit_of_measure: null,
+        unit_of_measure: 'kq',
         image: '',
         images: [],
+        type: 'product-add',
       },
       listCategory: [],
       feedbacks: [],
@@ -219,6 +222,7 @@ export default {
       isEdit: false,
       errors: null,
       typeProductList: [],
+      boxesList: [],
     }
   },
   computed: {
@@ -226,8 +230,9 @@ export default {
       return this.$route.params.id
     },
   },
-  mounted () {
+  created () {
     this.fetchListCategory()
+    this.getDeliveryBoxes()
 
     if(this.productById){
       this.fetchProductById(this.productById)
@@ -261,6 +266,12 @@ export default {
             this.product.images = res.data.images || []
             this.product.labelMark = res.data.labelMark
             this.feedbacks = res.data.feedbacks
+          })
+    },
+    getDeliveryBoxes() {
+      this.$store.dispatch('getDeliveryBoxes')
+          .then(res => {
+            this.boxesList = res.data[0];
           })
     },
     fetchListCategory () {
