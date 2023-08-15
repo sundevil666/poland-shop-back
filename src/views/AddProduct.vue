@@ -43,7 +43,7 @@
               </div>
             </div>
             <div class="col-4">
-              <the-input label="Weight product" placeholder="Wight product" type-input="text" v-model="product.size" />
+              <the-input label="Size fox boxes" placeholder="Size for boxes" type-input="text" v-model="product.size" />
             </div>
           </div>
           <div class="row">
