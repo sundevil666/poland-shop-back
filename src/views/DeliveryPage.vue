@@ -76,6 +76,7 @@ export default defineComponent({
         delivery_id: 1,
         ...box
       }
+      data.size = Number(data.size)
       this.$store.dispatch('updateDeliveryBoxById', {id, data})
     },
   }
