@@ -185,7 +185,6 @@
 
 import TheButton from '@/components/form/TheButton.vue';
 import TheInput from '@/components/form/TheInput.vue';
-import { boxes } from '@/moc/delivery-box';
 
 export default {
   name: "AddProduct",
@@ -219,7 +218,7 @@ export default {
       },
       isEdit: false,
       errors: null,
-      typeProductList: boxes,
+      typeProductList: [],
     }
   },
   computed: {

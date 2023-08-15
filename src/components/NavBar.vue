@@ -11,18 +11,30 @@
             <router-link exact-active-class="" class="nav-link" aria-current="page" :to="item.url">{{ item.label }}</router-link>
           </li>
         </ul>
+
+        <div class="ms-auto">
+          <button class="btn btn-primary" @click="logoOut">LogOut</button>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { setItem } from '@/helpers/persistanceStorage';
+
 export default {
   name: "NavBar",
   props: {
     navList: {
       type: Array,
       required: true,
+    }
+  },
+  methods: {
+    logoOut() {
+      setItem('accessToken', '')
+      this.$router.push({name: 'Auth'});
     }
   }
 }
