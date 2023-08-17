@@ -8,6 +8,36 @@
           placeholder="Title Delivery"
           @input="updateDeliveryTitle(1, {title: labelCategory})"
       />
+      <div class="row mb-4">
+        <div class="col-6">
+          <TheInput
+              v-model="delivery.time"
+              label="Time Delivery"
+              placeholder="Time Delivery"
+          />
+        </div>
+        <div class="col-6">
+          <TheInput
+              v-model="delivery.payment"
+              label="Payment Delivery"
+              placeholder="Payment Delivery"
+          />
+        </div>
+        <div class="col-6">
+          <TheInput
+              v-model="delivery.protected"
+              label="Protected Delivery"
+              placeholder="Protected Delivery"
+          />
+        </div>
+        <div class="col-6">
+          <TheInput
+              v-model="delivery.methodPayment"
+              label="Method payment Delivery"
+              placeholder="Method payment Delivery"
+          />
+        </div>
+      </div>
       <div
           v-for="box in boxesList.boxes"
           :key="box.id"
@@ -53,6 +83,12 @@ export default defineComponent({
   components: {TheInput},
   data() {
     return {
+      delivery: {
+        time: 'Przewidywana dostawa: w poniedziałek u Ciebie',
+        payment: 'Dostawa za darmo',
+        protected: 'Bezpieczeństwo pozakupowe',
+        methodPayment: 'Metody płatności',
+      },
       labelCategory: '',
       boxesList: [],
     }
