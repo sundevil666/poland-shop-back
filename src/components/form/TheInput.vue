@@ -1,5 +1,6 @@
 <template>
   <div class="mb-3">
+    <span v-if="nameIcon.length > 0" class="material-icons pe-1">{{ nameIcon }}</span>
     <label :for="`exampleFormControlInput1-${label}`" class="form-label">{{ label }}</label>
     <input
         :value="modelValue"
@@ -32,11 +33,19 @@ export default {
     typeInput: {
       type: String,
       default: 'text'
+    },
+    nameIcon: {
+      type: String,
+      default: ''
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style>
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-size: 16px;
+}
 </style>

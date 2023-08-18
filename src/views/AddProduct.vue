@@ -11,24 +11,31 @@
         <div class="col-9">
           <div class="row">
             <div class="col-12">
-              <the-input label="Product name" placeholder="Product Name" type-input="text" v-model="product.name" />
+              <the-input label="Product name" name-icon="title" placeholder="Product Name" type-input="text" v-model="product.name" />
             </div>
           </div>
           <div class="row">
+
+            <div class="col-4">
+              <the-input label="Code" name-icon="qr_code" placeholder="Code" type-input="text"  v-model="product.code" />
+            </div>
+            <div class="col-4">
+              <the-input label="Price" name-icon="payments" placeholder="Price" type-input="text" v-model="product.price" />
+            </div>
+            <div class="col-4">
+              <the-input label="Discount" name-icon="discount" placeholder="Discount" type-input="text" v-model="product.discount" />
+            </div>
+            <div class="col-12">
+              <the-input label="Discount label" name-icon="label" placeholder="Discount label" type-input="text" v-model="product.discountLabel" />
+            </div>
               <div class="col-4">
-                  <the-input label="Unit of measure" type-input="text" placeholder="Unit of measure" v-model="product.unit_of_measure"   />
+                  <the-input label="Unit of measure" name-icon="scale" type-input="text" placeholder="Unit of measure" v-model="product.unit_of_measure"   />
               </div>
-            <div class="col-4">
-              <the-input label="Code" placeholder="Code" type-input="text"  v-model="product.code" />
-            </div>
-            <div class="col-4">
-              <the-input label="Price" placeholder="Price" type-input="text" v-model="product.price" />
-            </div>
-            <div class="col-4">
-              <the-input label="Discount" placeholder="Discount" type-input="text" v-model="product.discount" />
-            </div>
+
+
             <div class="col-4">
               <div class="mb-3">
+                <i class="material-icons pe-1">local_shipping</i>
                 <label for="exampleFormControlInput1" class="form-label">Delivery box</label>
                 <select v-model="product.box_id" class="form-select">
                   <option selected disabled value="">Delivery box</option>
@@ -43,12 +50,13 @@
               </div>
             </div>
             <div class="col-4">
-              <the-input label="Size fox boxes" placeholder="Size for boxes" type-input="text" v-model="product.size" />
+              <the-input label="Size for boxes" name-icon="straighten" placeholder="Size for boxes" type-input="text" v-model="product.size" />
             </div>
           </div>
           <div class="row">
             <div class="col-4">
               <div class="mb-3">
+                <i class="material-icons pe-1">category</i>
                 <label for="exampleFormControlInput1" class="form-label">Category</label>
                 <select v-model="product.category_id" class="form-select">
                   <option selected disabled value="">Category</option>
@@ -63,16 +71,16 @@
               </div>
             </div>
             <div class="col-4">
-              <the-input label="Label mark" placeholder="Label mark" type-input="text" v-model="product.labelMark" />
+              <the-input label="Label mark" name-icon="check_circle" placeholder="Label mark" type-input="text" v-model="product.labelMark" />
             </div>
 
             <div class="col-4">
-              <the-input label="Promo Code" placeholder="Promo Code" type-input="number" v-model.number="product.promoCod" />
+              <the-input label="Promo Code" name-icon="closed_caption" placeholder="Promo Code" type-input="number" v-model.number="product.promoCod" />
             </div>
           </div>
           <div class="row">
             <div class="col-12">
-              <the-input label="Photo" typeInput="text" v-model="product.preview" placeholder="src img" />
+              <the-input label="Photo" name-icon="image" typeInput="text" v-model="product.preview" placeholder="src img" />
             </div>
             <div class="col-12">
               <div class="form-floating mb-3">
@@ -89,8 +97,8 @@
           </div>
         </div>
         <div class="col-3">
-          <the-input label="Quantity" placeholder="Quantity" type-input="text" v-model="product.quantity" />
-          <the-input label="Weight" placeholder="Weight" type-input="text" v-model="product.weight" />
+          <the-input label="Quantity" name-icon="production_quantity_limits" placeholder="Quantity" type-input="text" v-model="product.quantity" />
+          <the-input label="Weight" name-icon="fitness_center" placeholder="Weight" type-input="text" v-model="product.weight" />
           <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="product.status">
             <label class="form-check-label" for="flexCheckDefault">
@@ -211,6 +219,7 @@ export default {
         image: '',
         images: [],
         type: 'product-add',
+        discountLabel: '',
       },
       listCategory: [],
       feedbacks: [],
