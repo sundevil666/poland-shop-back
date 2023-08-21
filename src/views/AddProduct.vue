@@ -26,7 +26,7 @@
               <the-input label="Discount" name-icon="discount" placeholder="Discount" type-input="text" v-model="product.discount" />
             </div>
             <div class="col-12">
-              <the-input label="Discount label" name-icon="label" placeholder="Discount label" type-input="text" v-model="product.discountLabel" />
+              <the-input label="Discount label" name-icon="label" placeholder="Discount label" type-input="text" v-model="product.discount_label" />
             </div>
               <div class="col-4">
                   <the-input label="Unit of measure" name-icon="scale" type-input="text" placeholder="Unit of measure" v-model="product.unit_of_measure"   />
@@ -201,7 +201,7 @@ export default {
   data () {
     return {
       product: {
-        name: 'No name',
+        name: '',
         promoCod: '',
         description: '',
         discount: null,
@@ -209,17 +209,17 @@ export default {
         size: 1,
         weight: 1,
         price: 1,
-        code: 'need to add unique code',
+        code: '',
         category_id: '',
         preview: '',
         status: false,
         labelMark: '',
-        quantity: 1,
-        unit_of_measure: 'kq',
+        quantity: '',
+        unit_of_measure: '',
         image: '',
         images: [],
-        type: 'product-add',
-        discountLabel: '',
+        type: "product-add",
+        discount_label: '',
       },
       listCategory: [],
       feedbacks: [],
@@ -261,20 +261,22 @@ export default {
     fetchProductById(id) {
       this.$store.dispatch('getProductById', id)
           .then(res => {
-            this.product.name = res.data.name
-            this.product.promoCod = res.data.promoCod
-            this.product.description = res.data.description
-            this.product.discount = res.data.discount
-            this.product.price = res.data.price
-            this.product.code = res.data.code
-            this.product.quantity = res.data.quantity
-            this.product.unit_of_measure = res.data.unit_of_measure
-            this.product.category_id = res.data.category_id
-            this.product.preview = res.data.preview || ''
-            this.product.status = res.data.status
-            this.product.images = res.data.images || []
-            this.product.labelMark = res.data.labelMark
-            this.feedbacks = res.data.feedbacks
+            const data = res.data;
+            this.product.name = data.name
+            this.product.promoCod = data.promoCod
+            this.product.description = data.description
+            this.product.discount = data.discount
+            this.product.price = data.price
+            this.product.code = data.code
+            this.product.quantity = data.quantity
+            this.product.unit_of_measure = data.unit_of_measure
+            this.product.discount_label = data.discount_label
+            this.product.category_id = data.category_id
+            this.product.preview = data.preview || ''
+            this.product.status = data.status
+            this.product.images = data.images || []
+            this.product.labelMark = data.labelMark
+            this.product.feedbacks = data.feedback
           })
     },
     getDeliveryBoxes() {
