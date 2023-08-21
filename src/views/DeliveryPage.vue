@@ -14,6 +14,7 @@
               v-model="delivery.time"
               label="Time Delivery"
               placeholder="Time Delivery"
+              @input="updateDeliveryDelivery(1, {time: delivery.time})"
           />
         </div>
         <div class="col-6">
@@ -21,6 +22,7 @@
               v-model="delivery.payment"
               label="Payment Delivery"
               placeholder="Payment Delivery"
+              @input="updateDeliveryDelivery(1, {payment: delivery.payment})"
           />
         </div>
         <div class="col-6">
@@ -28,6 +30,7 @@
               v-model="delivery.protected"
               label="Protected Delivery"
               placeholder="Protected Delivery"
+              @input="updateDeliveryDelivery(1, {protected: delivery.protected})"
           />
         </div>
         <div class="col-6">
@@ -35,11 +38,12 @@
               v-model="delivery.methodPayment"
               label="Method payment Delivery"
               placeholder="Method payment Delivery"
+              @input="updateDeliveryDelivery(1, {methodPayment: delivery.methodPayment})"
           />
         </div>
       </div>
       <div
-          v-for="box in boxesList.boxes"
+          v-for="box in boxesListBoxes"
           :key="box.id"
       >
         <ul class="row">
@@ -90,7 +94,7 @@ export default defineComponent({
         methodPayment: 'Metody płatności',
       },
       labelCategory: '',
-      boxesList: [],
+      boxesListBoxes: [],
     }
   },
   created () {
@@ -100,11 +104,22 @@ export default defineComponent({
     getDeliveryBoxes() {
       this.$store.dispatch('getDeliveryBoxes')
           .then(res => {
-            this.boxesList = res.data[0];
-            this.labelCategory = this.boxesList.title
+            this.boxesListBoxes = res.data[0].boxes;
+            this.labelCategory = res.data[0].title
+            this.delivery.time = res.data[0].time
+            this.delivery.payment = res.data[0].payment
+            this.delivery.protected = res.data[0].protected
+            this.delivery.methodPayment = res.data[0].methodPayment
           })
     },
     updateDeliveryTitle(id, data) {
+     this.$store.dispatch('updateDeliveryTitle', {id, data})
+    },
+    updateDeliveryDelivery(id, val) {
+      const data = {
+        ...val,
+        title: this.labelCategory
+      }
      this.$store.dispatch('updateDeliveryTitle', {id, data})
     },
     updateDeliveryById(id, box) {
