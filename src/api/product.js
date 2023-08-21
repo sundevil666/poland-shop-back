@@ -6,7 +6,7 @@ import axios from '@/api/index';
 
 export const addProduct = (data) => axios.post('/products', data)
 
-export const listProducts = () => axios.get('/products')
+export const listProducts = () => axios.get('/products/admin/all')
 
 export const deleteByIdProduct = (id) => axios.delete(`/products/${id}`)
 
