@@ -122,7 +122,7 @@
           </div>
 
           <div class="col-2">
-              <img v-if="product.preview.length !== 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
+              <img v-if="product.image.length > 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
           </div>
       </div>
       <p v-if="!product.images.length > 0">sliders is empty yet</p>
@@ -130,7 +130,7 @@
           <ul class="row">
               <li v-for="(item, index) in product.images" :key="item" class="col-4 border-bottom mb-2 pb-2">
                   <div class="position-relative">
-                      <img :src="item" alt="src is not correct" class="w-100 mb-2">
+                      <img v-if="item.length > 0" :src="item" alt="src is not correct" class="w-100 mb-2">
                       <the-button :type-input="'button'" :type-btn="'btn-danger'" label="Delete" @click="deleteSlid(index)" class="position-absolute top-0 start-0" />
                   </div>
               </li>
@@ -266,17 +266,22 @@ export default {
             this.product.promoCod = data.promoCod
             this.product.description = data.description
             this.product.discount = data.discount
+            this.product.box_id = data.box_id
+            this.product.size = data.size
+            this.product.weight = data.weight
             this.product.price = data.price
             this.product.code = data.code
-            this.product.quantity = data.quantity
-            this.product.unit_of_measure = data.unit_of_measure
-            this.product.discount_label = data.discount_label
             this.product.category_id = data.category_id
             this.product.preview = data.preview || ''
             this.product.status = data.status
-            this.product.images = data.images || []
             this.product.labelMark = data.labelMark
-            this.product.feedbacks = data.feedback
+            this.product.quantity = data.quantity
+            this.product.unit_of_measure = data.unit_of_measure
+            this.product.image = data.image || ''
+            this.product.images = data.images || []
+            this.product.type = data.type
+            this.product.discount_label = data.discount_label
+            this.feedbacks = data.feedbacks || []
           })
     },
     getDeliveryBoxes() {
