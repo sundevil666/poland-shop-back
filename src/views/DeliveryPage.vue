@@ -9,7 +9,7 @@
           @input="updateDeliveryTitle(1, {title: labelCategory})"
       />
       <div class="row mb-4">
-        <div class="col-6">
+        <div class="col-4">
           <TheInput
               v-model="delivery.time"
               label="Time Delivery"
@@ -17,15 +17,7 @@
               @input="updateDeliveryDelivery(1, {time: delivery.time})"
           />
         </div>
-        <div class="col-6">
-          <TheInput
-              v-model="delivery.payment"
-              label="Payment Delivery"
-              placeholder="Payment Delivery"
-              @input="updateDeliveryDelivery(1, {payment: delivery.payment})"
-          />
-        </div>
-        <div class="col-6">
+        <div class="col-4">
           <TheInput
               v-model="delivery.protected"
               label="Protected Delivery"
@@ -33,7 +25,7 @@
               @input="updateDeliveryDelivery(1, {protected: delivery.protected})"
           />
         </div>
-        <div class="col-6">
+        <div class="col-4">
           <TheInput
               v-model="delivery.methodPayment"
               label="Method payment Delivery"
@@ -56,6 +48,14 @@
                 @input="updateDeliveryById(box.id, box)"
             />
           </li>
+          <li class="col-auto">
+            <TheInput
+                label="Price"
+                v-model="box.price"
+                placeholder="Price"
+                @input="updateDeliveryById(box.id, box)"
+            />
+          </li>
           <li class="col">
             <TheInput
                 label="Size"
@@ -66,9 +66,9 @@
           </li>
           <li class="col">
             <TheInput
-                label="Price"
-                v-model="box.price"
-                placeholder="Price"
+                v-model="box.delivery_payment"
+                label="Payment Delivery"
+                placeholder="Payment Delivery"
                 @input="updateDeliveryById(box.id, box)"
             />
           </li>
@@ -89,7 +89,6 @@ export default defineComponent({
     return {
       delivery: {
         time: 'Przewidywana dostawa: w poniedziałek u Ciebie',
-        payment: 'Dostawa za darmo',
         protected: 'Bezpieczeństwo pozakupowe',
         methodPayment: 'Metody płatności',
       },
@@ -107,7 +106,6 @@ export default defineComponent({
             this.boxesListBoxes = res.data[0].boxes;
             this.labelCategory = res.data[0].title
             this.delivery.time = res.data[0].time
-            this.delivery.payment = res.data[0].payment
             this.delivery.protected = res.data[0].protected
             this.delivery.methodPayment = res.data[0].methodPayment
           })
@@ -133,6 +131,3 @@ export default defineComponent({
   }
 })
 </script>
-<style scoped>
-
-</style>
