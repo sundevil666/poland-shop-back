@@ -66,7 +66,7 @@
           </li>
           <li class="col">
             <TheInput
-                v-model="box.delivery_payment"
+                v-model="box.methodPayment"
                 label="Payment Delivery"
                 placeholder="Payment Delivery"
                 @input="updateDeliveryById(box.id, box)"
