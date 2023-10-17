@@ -125,7 +125,7 @@
               <img v-if="product.image && product.image.length > 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
           </div>
       </div>
-      <p v-if="!product.images.length > 0">sliders is empty yet</p>
+      <p v-if="product.images && !product.images.length > 0">sliders is empty yet</p>
       <div v-else>
           <ul class="row">
               <li v-for="(item, index) in product.images" :key="item" class="col-4 border-bottom mb-2 pb-2">
