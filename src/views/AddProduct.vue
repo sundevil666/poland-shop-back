@@ -122,7 +122,7 @@
           </div>
 
           <div class="col-2">
-              <img v-if="product.image.length > 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
+              <img v-if="product.image && product.image.length > 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
           </div>
       </div>
       <p v-if="!product.images.length > 0">sliders is empty yet</p>
@@ -130,7 +130,7 @@
           <ul class="row">
               <li v-for="(item, index) in product.images" :key="item" class="col-4 border-bottom mb-2 pb-2">
                   <div class="position-relative">
-                      <img v-if="item.length > 0" :src="item" alt="src is not correct" class="w-100 mb-2">
+                      <img v-if="item.length && item.length > 0" :src="item" alt="src is not correct" class="w-100 mb-2">
                       <the-button :type-input="'button'" :type-btn="'btn-danger'" label="Delete" @click="deleteSlid(index)" class="position-absolute top-0 start-0" />
                   </div>
               </li>
@@ -160,7 +160,7 @@
             <the-button @click.prevent="cancelEditFeedback" label="Cancel" class="mb-4 btn-light" />
           </div>
           <div>
-            <img v-if="feedback.avatar.length > 0" :src="feedback.avatar" alt="url isn't correctly" class="w-100 d-block h-auto">
+            <img v-if="feedback.avatar && feedback.avatar.length > 0" :src="feedback.avatar" alt="url isn't correctly" class="w-100 d-block h-auto">
           </div>
         </div>
       </div>
