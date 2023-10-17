@@ -118,7 +118,7 @@
               <the-input label="Slide" placeholder="Add slide" type-input="text" v-model="product.image" />
           </div>
           <div class="col-auto">
-              <the-button :type-input="'button'" label="Add slide" @click="addSlid" :disabled="product.image.length === 0" class="mb-3" />
+              <the-button :type-input="'button'" label="Add slide" @click="addSlid" :disabled="product.image && product.image.length === 0" class="mb-3" />
           </div>
 
           <div class="col-2">
