@@ -6,7 +6,7 @@
         {{err}}
       </li>
     </ul>
-    <form @submit.prevent="onSubmitProduct">
+    <form>
       <div class="row">
         <div class="col-9">
           <div class="row">
@@ -84,14 +84,87 @@
             </div>
             <div class="col-12">
               <div class="form-floating mb-3">
-                <textarea
-                    v-model="product.description"
-                    class="form-control"
-                    placeholder="Description"
-                    id="floatingTextarea2"
-                    style="height: 100px"
-                ></textarea>
-                <label for="floatingTextarea2">Description</label>
+                <div v-if="editor" class="btn-editor-wrapper">
+                  <button
+                      type="button"
+                      class="btn btn-outline-info"
+                      @click="editor.chain().focus().toggleBold().run()"
+                      :disabled="!editor.can().chain().focus().toggleBold().run()"
+                      :class="{ 'is-active': editor.isActive('bold') }"
+                  >
+                    <span class="material-icons pe-1">format_bold</span>
+                  </button>
+                  <button
+                      type="button"
+                      class="btn btn-outline-info"
+                      @click="editor.chain().focus().toggleItalic().run()"
+                      :disabled="!editor.can().chain().focus().toggleItalic().run()"
+                      :class="{ 'is-active': editor.isActive('italic') }"
+                  >
+                    <span class="material-icons pe-1">format_italic</span>
+                  </button>
+                  <button
+                      type="button"
+                      :class="{ 'is-active': editor.isActive('italic') }"
+                      class="btn btn-outline-info"
+                      @click="editor.chain().focus().setHorizontalRule().run()"
+                  >
+                    <span class="material-icons pe-1">horizontal_rule</span>
+                  </button>
+                  <button
+                      type="button"
+                      :class="{ 'is-active': editor.isActive('italic') }"
+                      class="btn btn-outline-info"
+                      @click="editor.chain().focus().undo().run()"
+                      :disabled="!editor.can().chain().focus().undo().run()"
+                  >
+                    <span class="material-icons pe-1">undo</span>
+                  </button>
+                  <button
+                      type="button"
+                      :class="{ 'is-active': editor.isActive('italic') }"
+                      class="btn btn-outline-info"
+                      @click="editor.chain().focus().redo().run()"
+                      :disabled="!editor.can().chain().focus().redo().run()"
+                  >
+                    <span class="material-icons pe-1">redo</span>
+                  </button>
+
+                  <button
+                      type="button"
+                      :class="{ 'is-active': editor.isActive('italic') }"
+                      class="btn btn-outline-info"
+                      @click="editor.chain().focus().toggleBulletList().run()"
+                    >
+                    <span class="material-icons pe-1">list</span>
+                  </button>
+                  <button
+                      type="button"
+                      :class="{ 'is-active': editor.isActive('italic') }"
+                      @click="editor.chain().focus().toggleOrderedList().run()"
+                      class="btn btn-outline-info"
+                    >
+                    <span class="material-icons pe-1">format_list_numbered</span>
+                  </button>
+
+                  <input
+                    class="p-1"
+                    type="color"
+                    @input="editor.chain().focus().setColor($event.target.value).run()"
+                    :value="editor.getAttributes('textStyle').color"
+                  >
+
+                  <button
+                      type="button"
+                      class="btn btn-outline-info"
+                      @click="addImage"
+                  >
+                    <span class="material-icons pe-1">image</span>
+                  </button>
+                </div>
+                <editor-content
+                    :editor="editor"
+                />
               </div>
             </div>
           </div>
@@ -106,36 +179,36 @@
             </label>
           </div>
 
-          <the-button :label="productById ? 'Edit' : 'Add'" class="mb-4" />
+          <the-button :label="productById ? 'Edit' : 'Add'" class="mb-4" @click.prevent="onSubmitProduct" />
           <img v-if="product.preview.length > 0" :src="product.preview" alt="src is not correct" class="w-100">
         </div>
       </div>
     </form>
     <hr>
-      <h2>Slides</h2>
-      <div class="row align-items-end">
-          <div class="col">
-              <the-input label="Slide" placeholder="Add slide" type-input="text" v-model="product.image" />
-          </div>
-          <div class="col-auto">
-              <the-button :type-input="'button'" label="Add slide" @click="addSlid" :disabled="product.image && product.image.length === 0" class="mb-3" />
-          </div>
+    <h2>Slides</h2>
+    <div class="row align-items-end">
+        <div class="col">
+            <the-input label="Slide" placeholder="Add slide" type-input="text" v-model="product.image" />
+        </div>
+        <div class="col-auto">
+            <the-button :type-input="'button'" label="Add slide" @click="addSlid" :disabled="product.image && product.image.length === 0" class="mb-3" />
+        </div>
 
-          <div class="col-2">
-              <img v-if="product.image && product.image.length > 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
-          </div>
-      </div>
-      <p v-if="product.images && !product.images.length > 0">sliders is empty yet</p>
-      <div v-else>
-          <ul class="row">
-              <li v-for="(item, index) in product.images" :key="item" class="col-4 border-bottom mb-2 pb-2">
-                  <div class="position-relative">
-                      <img v-if="item.length && item.length > 0" :src="item" alt="src is not correct" class="w-100 mb-2">
-                      <the-button :type-input="'button'" :type-btn="'btn-danger'" label="Delete" @click="deleteSlid(index)" class="position-absolute top-0 start-0" />
-                  </div>
-              </li>
-          </ul>
-      </div>
+        <div class="col-2">
+            <img v-if="product.image && product.image.length > 0" :src="product.image" alt="src is not correct" class="w-100 mb-3">
+        </div>
+    </div>
+    <p v-if="product.images && !product.images.length > 0">sliders is empty yet</p>
+    <div v-else>
+        <ul class="row">
+            <li v-for="(item, index) in product.images" :key="item" class="col-4 border-bottom mb-2 pb-2">
+                <div class="position-relative">
+                    <img v-if="item.length && item.length > 0" :src="item" alt="src is not correct" class="w-100 mb-2">
+                    <the-button :type-input="'button'" :type-btn="'btn-danger'" label="Delete" @click="deleteSlid(index)" class="position-absolute top-0 start-0" />
+                </div>
+            </li>
+        </ul>
+    </div>
     <hr>
     <h2>Feedbacks</h2>
     <form>
@@ -194,10 +267,15 @@
 
 import TheButton from '@/components/form/TheButton.vue';
 import TheInput from '@/components/form/TheInput.vue';
+import { Editor, EditorContent } from '@tiptap/vue-3';
+import StarterKit from '@tiptap/starter-kit';
+import { Color } from '@tiptap/extension-color'
+import TextStyle from '@tiptap/extension-text-style'
+import Image from '@tiptap/extension-image'
 
 export default {
   name: "AddProduct",
-  components: {TheInput, TheButton},
+  components: {TheInput, TheButton, EditorContent },
   data () {
     return {
       product: {
@@ -232,6 +310,7 @@ export default {
       errors: null,
       typeProductList: [],
       boxesList: [],
+      editor: null,
     }
   },
   computed: {
@@ -246,6 +325,10 @@ export default {
     if(this.productById){
       this.fetchProductById(this.productById)
     }
+  },
+
+  beforeUnmount() {
+    this.editor.destroy()
   },
   methods: {
     addSlid() {
@@ -282,6 +365,16 @@ export default {
             this.product.type = data.type
             this.product.discount_label = data.discount_label
             this.feedbacks = data.feedbacks || []
+
+            this.editor = new Editor({
+              content: this.product.description,
+              extensions: [
+                StarterKit,
+                Color,
+                TextStyle,
+                Image,
+              ],
+            })
           })
     },
     getDeliveryBoxes() {
@@ -344,6 +437,7 @@ export default {
     },
     onSubmitProduct () {
       if(this.productById) {
+        this.product.description = this.editor.getHTML()
         this.$store.dispatch('updateProductById', {id: this.productById, data: this.product})
             .then((data) => {
               console.log(data);
@@ -354,6 +448,7 @@ export default {
               this.errors = errors
             })
       } else {
+        this.product.description = this.editor.getHTML()
         this.$store.dispatch('addProduct', this.product)
             .then((data) => {
               console.log(data);
@@ -377,8 +472,16 @@ export default {
             })
       }
 
-    }
-  }
+    },
+    addImage() {
+      const url = window.prompt('URL')
+
+      if (url) {
+        this.editor.chain().focus().setImage({ src: url }).run()
+      }
+    },
+
+  },
 }
 </script>
 <style>
@@ -386,5 +489,28 @@ export default {
     max-width: 100%;
     height: auto;
     max-height: 40px;
+}
+.btn-editor-wrapper {
+  margin-top: 10px;
+}
+.ProseMirror {
+  min-height: 250px;
+  margin: 15px 0;
+  max-width: 100%;
+  border: 1px solid #000;
+  padding: 10px;
+}
+.ProseMirror ul, .ProseMirror ol {
+  padding-left: 20px;
+}
+.ProseMirror ul li {
+  list-style-type: disc;
+}
+.ProseMirror ol li {
+  list-style-type: decimal;
+}
+.ProseMirror img {
+  display: block;
+  width: 100%;
 }
 </style>
