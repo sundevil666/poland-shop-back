@@ -325,6 +325,15 @@ export default {
     if(this.productById){
       this.fetchProductById(this.productById)
     }
+    this.editor = new Editor({
+      content: '',
+      extensions: [
+        StarterKit,
+        Color,
+        TextStyle,
+        Image,
+      ],
+    })
   },
 
   beforeUnmount() {
