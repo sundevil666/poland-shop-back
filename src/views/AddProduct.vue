@@ -85,67 +85,6 @@
             <div class="col-12">
               <div class="form-floating mb-3">
                 <div v-if="editor" class="btn-editor-wrapper">
-                  <button
-                      type="button"
-                      class="btn btn-outline-info"
-                      @click="editor.chain().focus().toggleBold().run()"
-                      :disabled="!editor.can().chain().focus().toggleBold().run()"
-                      :class="{ 'is-active': editor.isActive('bold') }"
-                  >
-                    <span class="material-icons pe-1">format_bold</span>
-                  </button>
-                  <button
-                      type="button"
-                      class="btn btn-outline-info"
-                      @click="editor.chain().focus().toggleItalic().run()"
-                      :disabled="!editor.can().chain().focus().toggleItalic().run()"
-                      :class="{ 'is-active': editor.isActive('italic') }"
-                  >
-                    <span class="material-icons pe-1">format_italic</span>
-                  </button>
-                  <button
-                      type="button"
-                      :class="{ 'is-active': editor.isActive('italic') }"
-                      class="btn btn-outline-info"
-                      @click="editor.chain().focus().setHorizontalRule().run()"
-                  >
-                    <span class="material-icons pe-1">horizontal_rule</span>
-                  </button>
-                  <button
-                      type="button"
-                      :class="{ 'is-active': editor.isActive('italic') }"
-                      class="btn btn-outline-info"
-                      @click="editor.chain().focus().undo().run()"
-                      :disabled="!editor.can().chain().focus().undo().run()"
-                  >
-                    <span class="material-icons pe-1">undo</span>
-                  </button>
-                  <button
-                      type="button"
-                      :class="{ 'is-active': editor.isActive('italic') }"
-                      class="btn btn-outline-info"
-                      @click="editor.chain().focus().redo().run()"
-                      :disabled="!editor.can().chain().focus().redo().run()"
-                  >
-                    <span class="material-icons pe-1">redo</span>
-                  </button>
-
-                  <button
-                      type="button"
-                      :class="{ 'is-active': editor.isActive('italic') }"
-                      class="btn btn-outline-info"
-                      @click="editor.chain().focus().toggleBulletList().run()"
-                    >
-                    <span class="material-icons pe-1">list</span>
-                  </button>
-                  <button
-                      type="button"
-                      :class="{ 'is-active': editor.isActive('italic') }"
-                      @click="editor.chain().focus().toggleOrderedList().run()"
-                      class="btn btn-outline-info"
-                    >
-                    <span class="material-icons pe-1">format_list_numbered</span>
-                  </button>
 
                   <input
                     class="p-1"
@@ -160,6 +99,44 @@
                       @click="addImage"
                   >
                     <span class="material-icons pe-1">image</span>
+                  </button>
+
+                  <template
+                      v-for="item in btnsTipTap"
+                      :key="item.title"
+                  >
+                    <button
+                        :title="item.title"
+                        type="button"
+                        class="btn btn-outline-info"
+                        :class="{ 'is-active': item.isActive ? item.isActive(): null  }"
+                        @click="item.action()"
+                    >
+                      <span class="material-icons pe-1">{{item.icon}}</span>
+                    </button>
+                  </template>
+                  <button
+                      type="button"
+                      class="btn btn-outline-info"
+                      @click="setLink"
+                      :class="{ 'is-active': editor.isActive('link') }"
+                  >
+                    <span class="material-icons pe-1">insert_link</span>
+                  </button>
+                  <button
+                      type="button"
+                      class="btn btn-outline-info"
+                      @click="editor.chain().focus().unsetLink().run()"
+                      :disabled="!editor.isActive('link')"
+                  >
+                    <span class="material-icons pe-1">link_off</span>
+                  </button>
+                  <button
+                      type="button"
+                      class="btn btn-outline-info"
+                      :disabled="!editor.isActive('videocam')"
+                      @click="addVideo">
+                    <span class="material-icons pe-1">videocam</span>
                   </button>
                 </div>
                 <editor-content
@@ -272,6 +249,8 @@ import StarterKit from '@tiptap/starter-kit';
 import { Color } from '@tiptap/extension-color'
 import TextStyle from '@tiptap/extension-text-style'
 import Image from '@tiptap/extension-image'
+import Link from '@tiptap/extension-link'
+import Youtube from '@tiptap/extension-youtube'
 
 export default {
   name: "AddProduct",
@@ -311,6 +290,68 @@ export default {
       typeProductList: [],
       boxesList: [],
       editor: null,
+      btnsTipTap: [
+        {
+          icon: 'format_bold',
+          title: 'Bold',
+          action: () => this.editor.chain().focus().toggleBold().run(),
+          isActive: () => this.editor.isActive('bold'),
+        },
+        {
+          icon: 'format_italic',
+          title: 'Italic',
+          action: () => this.editor.chain().focus().toggleItalic().run(),
+          isActive: () => this.editor.isActive('italic'),
+        },
+        {
+          icon: 'local_parking',
+          title: 'Paragraph',
+          action: () => this.editor.chain().focus().setParagraph().run(),
+          isActive: () => this.editor.isActive('paragraph'),
+        },
+        {
+          icon: 'list',
+          title: 'Bullet List',
+          action: () => this.editor.chain().focus().toggleBulletList().run(),
+          isActive: () => this.editor.isActive('bulletList'),
+        },
+        {
+          icon: 'format_list_numbered',
+          title: 'Ordered List',
+          action: () => this.editor.chain().focus().toggleOrderedList().run(),
+          isActive: () => this.editor.isActive('orderedList'),
+        },
+        {
+          icon: 'code',
+          title: 'Code Block',
+          action: () => this.editor.chain().focus().toggleCodeBlock().run(),
+          isActive: () => this.editor.isActive('codeBlock'),
+        },
+        {
+          icon: 'horizontal_rule',
+          title: 'Horizontal Rule',
+          action: () => this.editor.chain().focus().setHorizontalRule().run(),
+        },
+        {
+          icon: 'format_clear',
+          title: 'Clear Format',
+          action: () => this.editor.chain()
+              .focus()
+              .clearNodes()
+              .unsetAllMarks()
+              .run(),
+        },
+        {
+          icon: 'undo',
+          title: 'Undo',
+          action: () => this.editor.chain().focus().undo().run(),
+        },
+        {
+          icon: 'redo',
+          title: 'Redo',
+          action: () => this.editor.chain().focus().redo().run(),
+        },
+      ],
     }
   },
   computed: {
@@ -324,22 +365,54 @@ export default {
 
     if(this.productById){
       this.fetchProductById(this.productById)
+    } else {
+      this.editor = new Editor({
+        content: '',
+        extensions: [
+          StarterKit,
+          Color,
+          TextStyle,
+          Image,
+          Link.configure({
+            openOnClick: false,
+          }),
+          Youtube.configure({
+            controls: false,
+          }),
+        ],
+        editorProps: {
+          attributes: {
+            spellcheck: 'false',
+          },
+        },
+      })
     }
-    this.editor = new Editor({
-      content: '',
-      extensions: [
-        StarterKit,
-        Color,
-        TextStyle,
-        Image,
-      ],
-    })
   },
 
   beforeUnmount() {
     this.editor.destroy()
   },
   methods: {
+    addVideo() {
+      const url = prompt('Enter YouTube URL')
+      this.editor.commands.setYoutubeVideo({
+        src: url,
+        width: Math.max(320, 720),
+        height: Math.max(180, 480),
+      })
+    },
+    setLink() {
+      const previousUrl = this.editor.getAttributes('link').href
+      const url = window.prompt('URL', previousUrl)
+      if (url === null) {
+        return
+      }
+      if (url === '') {
+        this.editor.chain().focus().extendMarkRange('link').unsetLink().run()
+        return
+      }
+      this.editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    },
     addSlid() {
       this.product.images.push(this.product.image)
       this.product.image = ''
@@ -382,6 +455,12 @@ export default {
                 Color,
                 TextStyle,
                 Image,
+                Link.configure({
+                  openOnClick: false,
+                }),
+                Youtube.configure({
+                  controls: false,
+                }),
               ],
             })
           })
@@ -521,5 +600,8 @@ export default {
 .ProseMirror img {
   display: block;
   width: 100%;
+}
+.ProseMirror iframe {
+  width: 100% !important;
 }
 </style>
