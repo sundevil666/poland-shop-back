@@ -134,7 +134,6 @@
                   <button
                       type="button"
                       class="btn btn-outline-info"
-                      :disabled="!editor.isActive('videocam')"
                       @click="addVideo">
                     <span class="material-icons pe-1">videocam</span>
                   </button>
