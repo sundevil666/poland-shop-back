@@ -100,6 +100,13 @@
                   >
                     <span class="material-icons pe-1">image</span>
                   </button>
+                  <button
+                      type="button"
+                      class="btn btn-outline-info"
+                      @click="addImageWithLink"
+                  >
+                    <span class="material-icons pe-1">add</span>
+                  </button>
 
                   <template
                       v-for="item in btnsTipTap"
@@ -240,7 +247,6 @@
 </template>
 
 <script>
-
 import TheButton from '@/components/form/TheButton.vue';
 import TheInput from '@/components/form/TheInput.vue';
 import { Editor, EditorContent } from '@tiptap/vue-3';
@@ -567,6 +573,32 @@ export default {
         this.editor.chain().focus().setImage({ src: url }).run()
       }
     },
+    addImageWithLink() {
+      const imageUrl = window.prompt('Image URL');
+
+      if (imageUrl) {
+        const linkUrl = window.prompt('Link URL');
+
+        if (linkUrl) {
+          const view = this.editor.view;
+          const { from } = view.state.selection;
+
+          const image = this.editor.chain().focus().setImage({ src: imageUrl }).run();
+
+          // Создаем маркировку ссылки
+          const linkMark = view.state.schema.marks.link.create({ href: linkUrl });
+
+          // Добавляем маркировку ссылки к изображению
+          const tr = view.state.tr.addMark(from, from + image[0].nodeSize, linkMark);
+
+          // Заменяем изображение с маркировкой вместо него
+          tr.replaceWith(from, from + image[0].nodeSize, image[0]);
+
+          view.dispatch(tr);
+        }
+      }
+    }
+
 
   },
 }

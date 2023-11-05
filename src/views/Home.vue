@@ -4,7 +4,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div class="me-3">Filter</div>
-      <select v-model="categoryCurrent" class="form-select">
+      <select v-model="categoryCurrent" class="form-select" @change="changeCategory">
         <option selected value="0">All</option>
         <template
           v-for="cat in listCategory"
@@ -17,36 +17,37 @@
       </select>
     </div>
     <div v-if="isLoad">Load...</div>
-    <ul class="list-group" v-else-if="listProductsFiltered.length > 0">
-      <li class="list-group-item active">An active item</li>
-      <li class="list-group-item d-flex align-items-center">
-        <div class="me-4">id</div>
-        <div class="me-4">category</div>
-        <div>Product</div>
-        <div class="ms-auto me-4">Status</div>
-        <div class="ms-5">Edit</div>
-      </li>
-      <li v-for="item in listProductsFiltered" :key="item.id" class="list-group-item">
-        <div class="d-flex align-items-center">
-          <div class="me-4">{{ item.id }}</div>
-          <div class="me-2">{{ item.category?.name }}</div>
-          <router-link :to="{name: 'AddProduct', params: {id:  item.id}}" class="ms-4">
-            <span>{{ item.name }}</span>
-          </router-link>
-          <div class="ms-auto">
+    <table  class="table w-100" v-else-if="listProducts.length > 0">
+      <tr class="text-center">
+        <th>id</th>
+        <th>category</th>
+        <th>Product</th>
+        <th>Status</th>
+        <th>Edit</th>
+      </tr>
+      <tbody>
+        <tr v-for="item in listProducts" :key="item.id">
+          <td>{{ item.id }}</td>
+          <td>{{ item.category?.name }}</td>
+          <td>
+            <router-link :to="{name: 'AddProduct', params: {id:  item.id}}">
+              <span>{{ item.name }}</span>
+            </router-link>
+          </td>
+          <td>
             <input class="form-check-input" type="checkbox" :checked="item.status" disabled>
-          </div>
-          <button @click="deleteProduct(item.id, item.name)" class="btn btn-danger ms-5">Delete</button>
-        </div>
-      </li>
-    </ul>
+          </td>
+          <td>
+            <button @click="deleteProduct(item.id, item.name)" class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <div v-else>List is empty</div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
   name: 'Home',
   data() {
@@ -55,25 +56,25 @@ export default {
       isLoad: false,
       categoryCurrent: 0,
       listCategory: [],
-    }
-  },
-  computed: {
-    listProductsFiltered() {
-      if(this.categoryCurrent > 0) {
-        return this.listProducts.filter(item => Number(item.category.id) === Number(this.categoryCurrent))
-      }
-
-      return this.listProducts
+      perPage: 100,
+      categoryId: '',
     }
   },
   mounted () {
     this.fetchListCategory()
-    this.fetchListProduct()
+    this.fetchListProduct({perPage: this.perPage})
   },
   methods: {
-    fetchListProduct () {
+    changeCategory() {
+      const data = {
+        perPage: this.perPage,
+        categoryId: Number(this.categoryCurrent),
+      }
+      this.fetchListProduct(data)
+    },
+    fetchListProduct (perPage, categoryId) {
       this.isLoad = true
-      this.$store.dispatch('listProducts')
+      this.$store.dispatch('listProducts', perPage, categoryId)
           .then((data) => {
             this.listProducts = data.data
             this.isLoad = false
