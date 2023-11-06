@@ -17,9 +17,9 @@ const actions = {
         })
     })
   },
-  listProducts(_, {perPage, categoryId}) {
+  listProducts(_, data) {
     return new Promise((resolve, reject) => {
-      listProducts(perPage, categoryId)
+      listProducts(data)
         .then(res => {
           resolve(res.data)
         })

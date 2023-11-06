@@ -6,9 +6,9 @@ import axios from '@/api/index';
 
 export const addProduct = (data) => axios.post('/products', data)
 
-export const listProducts = (perPage = 10, categoryId = null) => {
+export const listProducts = ({perPage = 10, categoryId = null, page = 1}) => {
   const data = categoryId ?  `&category_ids[]=${categoryId}` : ''
-  return axios.get(`/products/admin/all?&sort[column]=id&sort[type]=desc&perPage=${perPage}${data}`)
+  return axios.get(`/products/admin/all?&sort[column]=id&sort[type]=desc&perPage=${perPage}${data}&page=${page}`)
 }
 
 export const deleteByIdProduct = (id) => axios.delete(`/products/${id}`)

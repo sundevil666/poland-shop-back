@@ -17,15 +17,28 @@
       </select>
     </div>
     <div v-if="isLoad">Load...</div>
-    <table  class="table w-100" v-else-if="listProducts.length > 0">
-      <tr class="text-center">
-        <th>id</th>
-        <th>category</th>
-        <th>Product</th>
-        <th>Status</th>
-        <th>Edit</th>
-      </tr>
-      <tbody>
+    <div v-else-if="listProducts.length > 0">
+      <div class="flex">
+        <button
+         v-for="n in metaData.last_page"
+         :key="n"
+         class=" btn mx-2"
+         :class="n === currentPage ? 'btn-info' : 'btn-light'"
+         type="button"
+         @click="goToPage(n)"
+        >
+          {{ n }}
+        </button>
+      </div>
+      <table  class="table w-100">
+        <tr class="text-center">
+          <th>id</th>
+          <th>category</th>
+          <th>Product</th>
+          <th>Status</th>
+          <th>Edit</th>
+        </tr>
+        <tbody>
         <tr v-for="item in listProducts" :key="item.id">
           <td>{{ item.id }}</td>
           <td>{{ item.category?.name }}</td>
@@ -41,8 +54,9 @@
             <button @click="deleteProduct(item.id, item.name)" class="btn btn-danger">Delete</button>
           </td>
         </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
     <div v-else>List is empty</div>
   </div>
 </template>
@@ -56,29 +70,37 @@ export default {
       isLoad: false,
       categoryCurrent: 0,
       listCategory: [],
-      perPage: 100,
+      perPage: 50,
       categoryId: '',
+      currentPage : 1,
+      metaData: '',
     }
   },
   mounted () {
     this.fetchListCategory()
-    this.fetchListProduct({perPage: this.perPage})
+    this.fetchListProduct()
   },
   methods: {
     changeCategory() {
+      this.fetchListProduct()
+    },
+    fetchListProduct () {
       const data = {
         perPage: this.perPage,
-        categoryId: Number(this.categoryCurrent),
+        page: this.currentPage,
+        categoryId: Number(this.categoryCurrent)
       }
-      this.fetchListProduct(data)
-    },
-    fetchListProduct (perPage, categoryId) {
       this.isLoad = true
-      this.$store.dispatch('listProducts', perPage, categoryId)
+      this.$store.dispatch('listProducts', data)
           .then((data) => {
             this.listProducts = data.data
+            this.metaData = data.meta
             this.isLoad = false
           })
+    },
+    goToPage (n) {
+      this.currentPage = n
+      this.fetchListProduct()
     },
     deleteProduct (id, name) {
       const confirmation = confirm(`Delete product ${name}?`)
