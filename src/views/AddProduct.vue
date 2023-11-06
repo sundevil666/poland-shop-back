@@ -105,7 +105,8 @@
                       class="btn btn-outline-info"
                       @click="addImageWithLink"
                   >
-                    <span class="material-icons pe-1">add</span>
+                    <span class="material-icons pe-1">insert_link</span>
+                    <span class="material-icons pe-1">image</span>
                   </button>
 
                   <template
@@ -253,7 +254,7 @@ import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import { Color } from '@tiptap/extension-color'
 import TextStyle from '@tiptap/extension-text-style'
-import Image from '@tiptap/extension-image'
+import { Image } from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
 import Youtube from '@tiptap/extension-youtube'
 
@@ -368,16 +369,27 @@ export default {
     this.fetchListCategory()
     this.getDeliveryBoxes()
 
-    if(this.productById){
-      this.fetchProductById(this.productById)
+    if (this.productById) {
+      this.fetchProductById(this.productById);
     } else {
+      this.initializeEditor('');
+    }
+  },
+
+  beforeUnmount() {
+    this.editor.destroy()
+  },
+  methods: {
+    initializeEditor(content) {
       this.editor = new Editor({
-        content: '',
+        content: content,
         extensions: [
           StarterKit,
           Color,
           TextStyle,
-          Image,
+          Image.configure({
+            inline: true,
+          }),
           Link.configure({
             openOnClick: false,
           }),
@@ -390,14 +402,8 @@ export default {
             spellcheck: 'false',
           },
         },
-      })
-    }
-  },
-
-  beforeUnmount() {
-    this.editor.destroy()
-  },
-  methods: {
+      });
+    },
     addVideo() {
       const url = prompt('Enter YouTube URL')
       this.editor.commands.setYoutubeVideo({
@@ -417,6 +423,13 @@ export default {
         return
       }
       this.editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    },
+    addImage() {
+      const url = window.prompt('URL')
+
+      if (url) {
+        this.editor.chain().focus().setImage({ src: url }).run()
+      }
     },
     addSlid() {
       this.product.images.push(this.product.image)
@@ -453,21 +466,8 @@ export default {
             this.product.discount_label = data.discount_label
             this.feedbacks = data.feedbacks || []
 
-            this.editor = new Editor({
-              content: this.product.description,
-              extensions: [
-                StarterKit,
-                Color,
-                TextStyle,
-                Image,
-                Link.configure({
-                  openOnClick: false,
-                }),
-                Youtube.configure({
-                  controls: false,
-                }),
-              ],
-            })
+            this.initializeEditor(this.product.description);
+
           })
     },
     getDeliveryBoxes() {
@@ -566,38 +566,33 @@ export default {
       }
 
     },
-    addImage() {
-      const url = window.prompt('URL')
-
-      if (url) {
-        this.editor.chain().focus().setImage({ src: url }).run()
-      }
-    },
     addImageWithLink() {
-      const imageUrl = window.prompt('Image URL');
+      const imageUrl = window.prompt('Введите URL изображения');
+      const linkUrl = window.prompt('Введите URL ссылки');
 
-      if (imageUrl) {
-        const linkUrl = window.prompt('Link URL');
+      if (imageUrl && linkUrl) {
+        const { state, view } = this.editor;
+        const { from } = state.selection;
 
-        if (linkUrl) {
-          const view = this.editor.view;
-          const { from } = view.state.selection;
+        console.log('Before transaction:');
+        console.log('state:', state);
+        console.log('from:', from);
 
-          const image = this.editor.chain().focus().setImage({ src: imageUrl }).run();
+        const imageNode = state.schema.nodes.image.create({ src: imageUrl });
+        const linkMark = state.schema.marks.link.create({ href: linkUrl });
 
-          // Создаем маркировку ссылки
-          const linkMark = view.state.schema.marks.link.create({ href: linkUrl });
+        const transaction = state.tr.insert(from, imageNode);
+        transaction.addMark(from, from + 1, linkMark);
 
-          // Добавляем маркировку ссылки к изображению
-          const tr = view.state.tr.addMark(from, from + image[0].nodeSize, linkMark);
+        console.log('After transaction:');
+        console.log('transaction:', transaction);
 
-          // Заменяем изображение с маркировкой вместо него
-          tr.replaceWith(from, from + image[0].nodeSize, image[0]);
-
-          view.dispatch(tr);
-        }
+        view.dispatch(transaction);
       }
     }
+
+
+
 
 
   },
