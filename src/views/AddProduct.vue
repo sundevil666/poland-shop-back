@@ -625,7 +625,7 @@ export default {
 }
 .ProseMirror img {
   display: block;
-  width: 100%;
+  max-width: 100%;
 }
 .ProseMirror iframe {
   width: 100% !important;
