@@ -5,7 +5,7 @@
 import axios from '@/api/index';
 
 // Получение списка категорий /api/categories
-export const listCategory = () => axios.get('/categories')
+export const listCategory = () => axios.get('/categories/tree')
 export const getCategoryById = (id) => axios.get(`/categories/${id}`)
 
 // Обнавление категории post /api/categories/8

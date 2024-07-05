@@ -12,11 +12,23 @@
           <button @click="deleteCategory(item.id, item.name)" class="btn btn-danger ms-auto">Delete</button>
         </div>
         <ul v-if="item.children.length > 0" class="mt-3">
-          <li v-for="subItem in item.children" :key="subItem.id" class="list-group-item d-flex align-items-center">
-            <router-link :to="{name: 'AddCategory', params: {id:  subItem.id}}">
-              {{ subItem.name }}
-            </router-link>
-            <button @click="deleteCategory(subItem.id, subItem.name)" class="btn btn-danger ms-auto">Delete</button>
+          <li v-for="subItem in item.children" :key="subItem.id" class="list-group-item">
+            <div class="d-flex align-items-center">
+              <router-link :to="{name: 'AddCategory', params: {id:  subItem.id}}">
+                - {{ subItem.name }}
+              </router-link>
+              <button @click="deleteCategory(subItem.id, subItem.name)" class="btn btn-danger ms-auto">Delete</button>
+            </div>
+            <ul v-if="subItem.children.length > 0">
+              <li v-for="subSubItem in subItem.children" :key="subSubItem.id" class="list-group-item">
+                <div class="d-flex align-items-center">
+                  <router-link :to="{name: 'AddCategory', params: {id:  subSubItem.id}}">
+                    -- {{ subSubItem.name }}
+                  </router-link>
+                  <button @click="deleteCategory(subSubItem.id, subSubItem.name)" class="btn btn-danger ms-auto">Delete</button>
+                </div>
+              </li>
+            </ul>
           </li>
         </ul>
       </li>
